@@ -1,0 +1,40 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>New Thread</ion-title>
+        <ion-buttons start>
+            <button (click)="cancelNewThread()">
+        <ion-icon name="arrow-back"></ion-icon> Cancel
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <form [formGroup]="createThreadForm" (ngSubmit)="onSubmit(createThreadForm.value)">
+        <ion-item [class.error]="!title.valid && title.touched">
+            <ion-label floating>Title</ion-label>
+            <ion-input type="text" value="" [formControl]="title"></ion-input>
+        </ion-item>
+        <div *ngIf="title.hasError('required') && title.touched" class="error-box">* Title is required.</div>
+        <div *ngIf="title.hasError('minlength') && title.touched" class="error-box">* Minimum password length is 8.</div>
+        <ion-item [class.error]="!question.valid && question.touched">
+            <ion-label floating>Question</ion-label>
+            <ion-textarea [formControl]="question"></ion-textarea>
+        </ion-item>
+        <div *ngIf="question.hasError('required') && question.touched" class="error-box">* Question is required.</div>
+        <div *ngIf="question.hasError('minlength') && question.touched" class="error-box">* Type at least 100 characters.</div>
+        <ion-item>
+            <ion-label>Category</ion-label>
+            <ion-select multiple="false" [formControl]="category">
+                <ion-option value="aspnet" checked="true">ASP.NET</ion-option>
+                <ion-option value="csharp">C#</ion-option>
+                <ion-option value="java">JAVA</ion-option>
+                <ion-option value="nodejs">Node.js</ion-option>
+                <ion-option value="angular">Angular</ion-option>
+            </ion-select>
+        </ion-item>
+        <div *ngIf="category.hasError('minlength')" class="error-box">* Select at least one category.</div>
+        <br/><br/>
+        <button type="submit" class="custom-button" [disabled]="!createThreadForm.valid" block>Submit</button>
+    </form>
+</ion-content>
