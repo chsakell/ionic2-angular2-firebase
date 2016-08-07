@@ -1,0 +1,23 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>New Comment</ion-title>
+        <ion-buttons start>
+            <button (click)="cancelNewComment()">
+        <ion-icon name="arrow-back"></ion-icon> Cancel
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <form [formGroup]="createCommentForm" (ngSubmit)="onSubmit(createCommentForm.value)" *ngIf="loaded">
+        <ion-item [class.error]="!comment.valid && comment.touched">
+            <ion-label floating>Comment</ion-label>
+            <ion-textarea [formControl]="comment"></ion-textarea>
+        </ion-item>
+        <div *ngIf="comment.hasError('required') && comment.touched" class="error-box">* Comment is required.</div>
+        <div *ngIf="comment.hasError('minlength') && comment.touched" class="error-box">* Type at least 100 characters.</div>
+        <br/><br/>
+        <button type="submit" class="custom-button" [disabled]="!createCommentForm.valid" block>Submit</button>
+    </form>
+</ion-content>

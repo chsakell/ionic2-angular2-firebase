@@ -1,20 +1,38 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
-import { IThread } from '../interfaces';
+import { IThread, IComment } from '../interfaces';
 
 declare var firebase: any;
 
 @Injectable()
 export class DataService {
 
+    threadsRef = firebase.database().ref('threads');
+    commentsRef = firebase.database().ref('comments');
+
     constructor() { }
 
+    loadThreads() {
+        return this.threadsRef.once('value');
+    }
     submitThread(thread: IThread) {
-        return firebase.database().ref('threads').push(thread);
+        return this.threadsRef.push(thread);
     }
 
-    loadThreads() {
-        return firebase.database().ref('threads').once('value');
+    loadComments(threadKey: string) {
+        return this.commentsRef.orderByChild('thread').equalTo(threadKey).once('value');
+    }
+
+    submitComment(threadKey: string, comment: IComment) {
+        let commentRef = this.commentsRef.push();
+        let commentkey: string = commentRef.key;
+        commentRef.set(comment);
+
+        return this.threadsRef.child(threadKey + '/comments').once('value')
+            .then((snapshot) => {
+                let numberOfComments = snapshot == null ? 0 : snapshot.val();
+                this.threadsRef.child(threadKey + '/comments').set(numberOfComments + 1);
+            });
     }
 }

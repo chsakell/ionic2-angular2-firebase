@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { IThread } from '../interfaces';
+import { IThread, IComment } from '../interfaces';
 import { ItemsService } from '../services/items.service';
 
 @Injectable()
@@ -24,11 +24,32 @@ export class MappingsService {
                 category: thread.category,
                 dateCreated: thread.dateCreated,
                 user: thread.user,
-                comments: this.itemsService.getObjectKeysSize(thread.comments)
+                comments: thread.comments == null ? 0 : thread.comments
             });
         });
 
         return threads;
+    }
+
+    getComments(snapshot: any): Array<IComment> {
+        let comments: Array<IComment> = [];
+        if (snapshot.val() == null)
+            return comments;
+
+        let list = snapshot.val();
+
+        Object.keys(snapshot.val()).map((key: any) => {
+            let comment: any = list[key];
+            comments.push({
+                key: key,
+                text: comment.title,
+                thread: comment.thread,
+                dateCreated: comment.dateCreated,
+                user: comment.user
+            });
+        });
+
+        return comments;
     }
 
 }

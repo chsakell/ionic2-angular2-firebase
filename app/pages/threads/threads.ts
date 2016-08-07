@@ -14,25 +14,6 @@ export class ThreadsPage implements OnInit {
   segment = 'all';
 
   public threads: Array<IThread> = [];
-  /*{
-    key: 1,
-    title: 'Which programming language do you prefer?',
-    question: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    user: 'Chris Sakellarios',
-    dateCreated: new Date(),
-    comments: 20,
-    category: 'programming'
-  },
-  {
-    key: 2,
-    title: 'IPhone crashes after updating Facebook app',
-    question: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    user: 'John Smith',
-    dateCreated: new Date(),
-    comments: 12,
-    category: 'mobile'
-  }
-];*/
 
   constructor(private navCtrl: NavController,
     private modalCtrl: ModalController,
@@ -43,13 +24,6 @@ export class ThreadsPage implements OnInit {
     var self = this;
     this.dataService.loadThreads()
       .then(function (snapshot) {
-        /*
-        var list = snapshot.val();
-        Object.keys(snapshot.val()).map((key) => {
-          console.log(key);
-          console.log(list[key]);
-        });
-      });*/
         self.threads = self.mappingsService.getThreads(snapshot);
         console.log(self.threads);
       });
@@ -71,7 +45,9 @@ export class ThreadsPage implements OnInit {
     modalPage.present();
   }
 
-  viewComments(thread: any) {
-    this.navCtrl.push(ThreadCommentsPage);
+  viewComments(thread: IThread) {
+    this.navCtrl.push(ThreadCommentsPage, {
+      threadKey: thread.key
+    });
   }
 }

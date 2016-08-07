@@ -5,7 +5,15 @@ export interface IThread {
     category: string;
     dateCreated: string;
     user: string;
-    comments: Object;
+    comments: number;
+}
+
+export interface IComment {
+    key?: string;
+    thread: string;
+    text: string;
+    user: string;
+    dateCreated: string;
 }
 
 export interface Predicate<T> {
