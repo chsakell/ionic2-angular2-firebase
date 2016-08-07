@@ -47,7 +47,7 @@
         <ion-row>
 
           <ion-col>
-            <button primary clear small>
+            <button primary clear small (click)="viewComments(thread)">
         <ion-icon name="text"></ion-icon>
         <div>{{thread.comments}} Comments</div>
       </button>
@@ -60,7 +60,7 @@
           </ion-col>
           <ion-col center text-center>
             <ion-note>
-              11h ago
+              {{thread.category}}
             </ion-note>
           </ion-col>
         </ion-row>

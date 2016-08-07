@@ -48,12 +48,13 @@ export class ThreadCreatePage implements OnInit {
         dismissOnPageChange: true
       });
 
-      let newThread: IThread = {
+      let newThread: any = {
         title: thread.title,
         question: thread.question,
         category: thread.category,
         user: 'chsakell',
-        dateCreated: new Date().toString()
+        dateCreated: new Date().toString(),
+        comments: null
       };
 
 

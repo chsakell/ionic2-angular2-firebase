@@ -1,7 +1,10 @@
 {
-  "dependencies": {},
+  "dependencies": {
+    "lodash": "registry:npm/lodash#4.0.0+20160416211519"
+  },
   "devDependencies": {},
   "globalDependencies": {
+    "jquery": "registry:dt/jquery#1.10.0+20160417213236",
     "es6-shim": "registry:dt/es6-shim#0.31.2+20160602141504"
   }
 }

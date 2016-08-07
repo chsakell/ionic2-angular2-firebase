@@ -13,4 +13,8 @@ export class DataService {
     submitThread(thread: IThread) {
         return firebase.database().ref('threads').push(thread);
     }
+
+    loadThreads() {
+        return firebase.database().ref('threads').once('value');
+    }
 }
