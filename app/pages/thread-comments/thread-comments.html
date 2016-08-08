@@ -9,9 +9,48 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
+    <ion-list>
+        <ion-item *ngFor="let comment of comments">
+            <ion-card>
 
- <button fab primary fab-bottom fab-right class="fab-footer" (click)="createComment()">
+                <ion-item>
+                    <ion-avatar item-left>
+                        <img src="http://1.gravatar.com/avatar/">
+                    </ion-avatar>
+                    <h2>{{comment.user}}</h2>
+                    <p>{{comment.dateCreated | date:'medium'}}</p>
+                </ion-item>
+
+                <ion-card-content>
+                    <p>{{comment.text}}</p>
+                </ion-card-content>
+
+                <ion-row>
+                    <ion-col>
+                        <button primary clear small>
+        <ion-icon name="thumbs-up"></ion-icon>
+        <div>12 Likes</div>
+      </button>
+                    </ion-col>
+                    <ion-col>
+                        <button primary clear small>
+        <ion-icon name="text"></ion-icon>
+        <div>4 Comments</div>
+      </button>
+                    </ion-col>
+                    <ion-col center text-center>
+                        <ion-note>
+                            11h ago
+                        </ion-note>
+                    </ion-col>
+                </ion-row>
+
+            </ion-card>
+        </ion-item>
+    </ion-list>
+
+    <button fab primary fab-bottom fab-right class="fab-footer" (click)="createComment()">
     <ion-icon name="create" is-active="false"></ion-icon>
   </button>
 </ion-content>

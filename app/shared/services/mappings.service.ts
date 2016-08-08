@@ -42,7 +42,7 @@ export class MappingsService {
             let comment: any = list[key];
             comments.push({
                 key: key,
-                text: comment.title,
+                text: comment.text,
                 thread: comment.thread,
                 dateCreated: comment.dateCreated,
                 user: comment.user

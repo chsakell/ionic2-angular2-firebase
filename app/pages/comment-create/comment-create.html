@@ -13,7 +13,7 @@
     <form [formGroup]="createCommentForm" (ngSubmit)="onSubmit(createCommentForm.value)" *ngIf="loaded">
         <ion-item [class.error]="!comment.valid && comment.touched">
             <ion-label floating>Comment</ion-label>
-            <ion-textarea [formControl]="comment"></ion-textarea>
+            <ion-textarea [formControl]="comment" rows="10"></ion-textarea>
         </ion-item>
         <div *ngIf="comment.hasError('required') && comment.touched" class="error-box">* Comment is required.</div>
         <div *ngIf="comment.hasError('minlength') && comment.touched" class="error-box">* Type at least 100 characters.</div>
