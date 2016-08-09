@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, ModalController } from 'ionic-angular';
+import { NavController, ModalController, ToastController  } from 'ionic-angular';
 
 import { IThread } from '../../shared/interfaces';
 import { ThreadCreatePage } from '../thread-create/thread-create';
@@ -18,6 +18,7 @@ export class ThreadsPage implements OnInit {
 
   constructor(private navCtrl: NavController,
     private modalCtrl: ModalController,
+    private toastCtrl: ToastController,
     private dataService: DataService,
     private mappingsService: MappingsService,
     private itemsService: ItemsService) { }
@@ -46,7 +47,12 @@ export class ThreadsPage implements OnInit {
 
     modalPage.onDidDismiss((data: any[]) => {
       if (data) {
-        console.log(data);
+        let toast = this.toastCtrl.create({
+          message: 'Thread created',
+          duration: 3000,
+          position: 'bottom'
+        });
+        toast.present();
       }
     });
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActionSheetController, ModalController, NavParams } from 'ionic-angular';
+import { ActionSheetController, ModalController, ToastController, NavParams } from 'ionic-angular';
 
 import { CommentCreatePage } from '../comment-create/comment-create';
 import { IComment } from '../../shared/interfaces';
@@ -15,6 +15,7 @@ export class ThreadCommentsPage implements OnInit {
 
     constructor(private actionSheeCtrl: ActionSheetController,
         private modalCtrl: ModalController,
+        private toastCtrl: ToastController,
         private navParams: NavParams,
         private dataService: DataService,
         private mappingsService: MappingsService) { }
@@ -23,13 +24,7 @@ export class ThreadCommentsPage implements OnInit {
         var self = this;
         self.threadKey = self.navParams.get('threadKey');
         console.log(self.threadKey);
-        /*
-        self.dataService.loadComments(self.threadKey)
-            .then(function(snapshot) {
-                self.comments = self.mappingsService.getComments(snapshot);
-                console.log(self.comments);
-            });
-        */
+
         self.dataService.getThreadCommentsRef(self.threadKey).on('value', function (snapshot) {
             self.comments = self.mappingsService.getComments(snapshot);
             console.log(self.comments);
@@ -43,7 +38,12 @@ export class ThreadCommentsPage implements OnInit {
 
         modalPage.onDidDismiss((data: any[]) => {
             if (data) {
-                console.log(data);
+                let toast = this.toastCtrl.create({
+                    message: 'Comment created',
+                    duration: 3000,
+                    position: 'bottom'
+                });
+                toast.present();
             }
         });
 
