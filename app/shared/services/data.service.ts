@@ -8,10 +8,18 @@ declare var firebase: any;
 @Injectable()
 export class DataService {
 
-    threadsRef = firebase.database().ref('threads');
-    commentsRef = firebase.database().ref('comments');
+    threadsRef: any = firebase.database().ref('threads');
+    commentsRef: any = firebase.database().ref('comments');
 
     constructor() { }
+
+    getThreadsRef() {
+        return this.threadsRef;
+    }
+
+    getThreadCommentsRef(threadKey: string) {
+        return this.commentsRef.orderByChild('thread').equalTo(threadKey);
+    }
 
     loadThreads() {
         return this.threadsRef.once('value');

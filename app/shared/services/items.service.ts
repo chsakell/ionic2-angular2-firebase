@@ -8,6 +8,10 @@ export class ItemsService {
 
     constructor() { }
 
+    reversedItems(array: any[]) {
+        return _.reverse(array);
+    }
+
     /*
     Returns object's keys lenght
     */

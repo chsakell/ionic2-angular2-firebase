@@ -23,12 +23,18 @@ export class ThreadCommentsPage implements OnInit {
         var self = this;
         self.threadKey = self.navParams.get('threadKey');
         console.log(self.threadKey);
+        /*
         self.dataService.loadComments(self.threadKey)
             .then(function(snapshot) {
                 self.comments = self.mappingsService.getComments(snapshot);
                 console.log(self.comments);
             });
-     }
+        */
+        self.dataService.getThreadCommentsRef(self.threadKey).on('value', function (snapshot) {
+            self.comments = self.mappingsService.getComments(snapshot);
+            console.log(self.comments);
+        });
+    }
 
     createComment() {
         let modalPage = this.modalCtrl.create(CommentCreatePage, {
