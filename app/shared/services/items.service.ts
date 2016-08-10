@@ -8,6 +8,10 @@ export class ItemsService {
 
     constructor() { }
 
+    getKeys(object): string[] {
+        return _.keysIn(object);
+    }
+
     reversedItems<T>(array: T[]): T[] {
         return <T[]>_.reverse(array);
     }

@@ -12,11 +12,13 @@ import { ItemsService } from '../../shared/services/items.service';
   templateUrl: 'build/pages/threads/threads.html'
 })
 export class ThreadsPage implements OnInit {
-  segment = 'all';
+  segment: string = 'all';
+  selectedSegment: string = this.segment;
   private start: number;
   private pageSize: number = 3;
 
   public threads: Array<IThread> = [];
+  public favoriteThreadKeys: string[];
 
   constructor(private navCtrl: NavController,
     private modalCtrl: ModalController,
@@ -27,12 +29,7 @@ export class ThreadsPage implements OnInit {
 
   ngOnInit() {
     var self = this;
-    this.dataService.getTotalThreads().then(function (snapshot) {
-      self.start = snapshot.val();
-      if (self.start != null) {
-        self.loadThreads(true);
-      }
-    });
+    self.loadThreads(true);
   }
 
   loadThreads(fromStart: boolean) {
@@ -40,10 +37,24 @@ export class ThreadsPage implements OnInit {
 
     if (fromStart) {
       self.threads = [];
-      return this.dataService.getTotalThreads().then(function (snapshot) {
-        self.start = snapshot.val();
-        self.getThreads();
-      });
+
+      if (self.segment === 'all') {
+        return this.dataService.getTotalThreads().then(function (snapshot) {
+          self.start = snapshot.val();
+          self.getThreads();
+        });
+      } else {
+        self.start = 0;
+        self.favoriteThreadKeys = [];
+        return self.dataService.getFavoriteThreads('chsakell').then(function (dataSnapshot) {
+          let favoriteThreads = dataSnapshot.val();
+          self.itemsService.getKeys(favoriteThreads).forEach(function (threadKey) {
+            self.start++;
+            self.favoriteThreadKeys.push(threadKey);
+          });
+          return self.getThreads();
+        });
+      }
     } else {
       return self.getThreads();
     }
@@ -51,16 +62,31 @@ export class ThreadsPage implements OnInit {
 
   getThreads() {
     var self = this;
-    return this.dataService.getThreadsRef().orderByPriority().startAt(self.start - self.pageSize).endAt(self.start).once('value', function (snapshot) {
-      self.itemsService.reversedItems<IThread>(self.mappingsService.getThreads(snapshot)).forEach(function (thread) {
-        self.threads.push(thread);
+
+    if (self.segment === 'all') {
+      return this.dataService.getThreadsRef().orderByPriority().startAt(self.start - self.pageSize).endAt(self.start).once('value', function (snapshot) {
+        self.itemsService.reversedItems<IThread>(self.mappingsService.getThreads(snapshot)).forEach(function (thread) {
+          self.threads.push(thread);
+        });
+        self.start -= (self.pageSize + 1);
       });
-      self.start -= (self.pageSize + 1);
-    });
+    } else {
+      self.favoriteThreadKeys.forEach(key => {
+        this.dataService.getThreadsRef().child(key).once('value')
+          .then(function (dataSnapshot) {
+            self.threads.unshift(self.mappingsService.getThread(dataSnapshot.val(), key));
+          });
+      });
+    }
   }
 
-  filterThreads() {
-    console.log('ok..');
+  filterThreads(segment) {
+    if (this.selectedSegment !== this.segment) {
+      this.selectedSegment = this.segment;
+      console.log(this.segment);
+      // Initialize
+      this.loadThreads(true);
+    }
   }
 
   createThread() {

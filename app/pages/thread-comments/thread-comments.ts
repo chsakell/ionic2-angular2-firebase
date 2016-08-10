@@ -54,14 +54,15 @@ export class ThreadCommentsPage implements OnInit {
     }
 
     showCommentActions() {
-        let actionSheet = this.actionSheeCtrl.create({
-            title: 'Actions',
+        var self = this;
+        let actionSheet = self.actionSheeCtrl.create({
+            title: 'Thread Actions',
             buttons: [
                 {
                     text: 'Add to favorites',
                     icon: 'heart',
                     handler: () => {
-
+                        self.addThreadToFavorites();
                     }
                 }, {
                     text: 'Report thread',
@@ -82,5 +83,18 @@ export class ThreadCommentsPage implements OnInit {
         });
 
         actionSheet.present();
+    }
+
+    addThreadToFavorites() {
+        var self = this;
+        self.dataService.addThreadToFavorites('chsakell', self.threadKey)
+            .then(function () {
+                let toast = self.toastCtrl.create({
+                    message: 'Added to favorites',
+                    duration: 3000,
+                    position: 'top'
+                });
+                toast.present();
+            });
     }
 }

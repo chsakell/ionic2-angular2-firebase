@@ -31,6 +31,21 @@ export class MappingsService {
         return threads;
     }
 
+    getThread(snapshot: any, key: string): IThread {
+        
+        let thread: IThread = {
+            key: key,
+            title: snapshot.title,
+            question: snapshot.question,
+            category: snapshot.category,
+            dateCreated: snapshot.dateCreated,
+            user: snapshot.user,
+            comments: snapshot.comments == null ? 0 : snapshot.comments
+        };
+
+        return thread;
+    }
+
     getComments(snapshot: any): Array<IComment> {
         let comments: Array<IComment> = [];
         if (snapshot.val() == null)
@@ -48,8 +63,8 @@ export class MappingsService {
                 thread: comment.thread,
                 dateCreated: comment.dateCreated,
                 user: comment.user,
-                votesUp : this.itemsService.groupByBoolean(comment.votes, true),
-                votesDown : this.itemsService.groupByBoolean(comment.votes, false)
+                votesUp: this.itemsService.groupByBoolean(comment.votes, true),
+                votesDown: this.itemsService.groupByBoolean(comment.votes, false)
             });
         });
 

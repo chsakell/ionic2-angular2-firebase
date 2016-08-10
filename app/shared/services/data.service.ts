@@ -8,6 +8,7 @@ declare var firebase: any;
 @Injectable()
 export class DataService {
 
+    usersRef: any = firebase.database().ref('users');
     threadsRef: any = firebase.database().ref('threads');
     commentsRef: any = firebase.database().ref('comments');
     statisticsRef: any = firebase.database().ref('statistics');
@@ -43,6 +44,14 @@ export class DataService {
         this.statisticsRef.child('threads').set(newPriority);
         console.log(newPriority);
         return newThreadRef.setWithPriority(thread, newPriority);
+    }
+
+    addThreadToFavorites(user: string, threadKey: string) {
+        return this.usersRef.child(user + '/favorites/' + threadKey).set(true);
+    }
+
+    getFavoriteThreads(user: string) {
+        return this.usersRef.child(user + '/favorites/' ).once('value');
     }
 
     loadComments(threadKey: string) {
