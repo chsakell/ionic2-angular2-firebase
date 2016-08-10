@@ -31,19 +31,26 @@ export class ThreadsPage implements OnInit {
       self.start = snapshot.val();
       console.log(self.start);
       if (self.start != null) {
-        self.loadThreads();
+        self.loadThreads(true);
       }
     });
-    /*
-    this.dataService.getThreadsRef().orderByPriority().startAt(3).endAt(5).on('value', function (snapshot) {
-      self.threads = self.itemsService.reversedItems(self.mappingsService.getThreads(snapshot));
-      console.log(self.threads);
-    });
-    */
-
   }
 
-  loadThreads() {
+  loadThreads(fromStart: boolean) {
+    var self = this;
+
+    if (fromStart) {
+      self.threads = [];
+      return this.dataService.getTotalThreads().then(function (snapshot) {
+        self.start = snapshot.val();
+        self.getThreads();
+      });
+    } else {
+      return self.getThreads();
+    }
+  }
+
+  getThreads() {
     var self = this;
     return this.dataService.getThreadsRef().orderByPriority().startAt(self.start - self.pageSize).endAt(self.start).once('value', function (snapshot) {
       self.itemsService.reversedItems<IThread>(self.mappingsService.getThreads(snapshot)).forEach(function (thread) {
@@ -52,7 +59,6 @@ export class ThreadsPage implements OnInit {
       console.log(self.threads);
       self.start -= (self.pageSize + 1);
     });
-
   }
 
   filterThreads() {
@@ -82,11 +88,16 @@ export class ThreadsPage implements OnInit {
     });
   }
 
+  reloadThreads(refresher) {
+    this.loadThreads(true).then(() => {
+      refresher.complete();
+    });
+  }
 
   fetchNextThreads(infiniteScroll) {
     console.log(this.start);
     if (this.start > 0) {
-      this.loadThreads().then(() => {
+      this.loadThreads(false).then(() => {
         infiniteScroll.complete();
       });
     } else {
