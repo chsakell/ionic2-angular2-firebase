@@ -62,7 +62,6 @@ export class ThreadCreatePage implements OnInit {
 
       this.dataService.submitThread(newThread)
         .then(function (snapshot) {
-          console.log(snapshot);
 
           loader.dismiss()
             .then(() => {

@@ -10,8 +10,19 @@ export class DataService {
 
     threadsRef: any = firebase.database().ref('threads');
     commentsRef: any = firebase.database().ref('comments');
+    statisticsRef: any = firebase.database().ref('statistics');
+    totalThreads: number;
 
-    constructor() { }
+    constructor() {
+        var self = this;
+        self.statisticsRef.child('threads').on('value', function (snapshot) {
+            self.totalThreads = snapshot.val() == null ? 0 : snapshot.val();
+        });
+    }
+
+    getTotalThreads() {
+        return this.statisticsRef.child('threads').once('value');
+    }
 
     getThreadsRef() {
         return this.threadsRef;
@@ -25,7 +36,12 @@ export class DataService {
         return this.threadsRef.once('value');
     }
     submitThread(thread: IThread) {
-        return this.threadsRef.push(thread);
+
+        var newThreadRef = this.threadsRef.push();
+        var newPriority = this.totalThreads + 1;
+        this.statisticsRef.child('threads').set(newPriority);
+        console.log(newPriority);
+        return newThreadRef.setWithPriority(thread, newPriority);
     }
 
     loadComments(threadKey: string) {
