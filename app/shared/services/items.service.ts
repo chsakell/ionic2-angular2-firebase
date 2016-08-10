@@ -8,8 +8,8 @@ export class ItemsService {
 
     constructor() { }
 
-    reversedItems(array: any[]) {
-        return _.reverse(array);
+    reversedItems<T>(array: T[]): T[] {
+        return <T[]>_.reverse(array);
     }
 
     /*

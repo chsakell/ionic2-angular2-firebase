@@ -13,6 +13,7 @@ import { ItemsService } from '../../shared/services/items.service';
 })
 export class ThreadsPage implements OnInit {
   segment = 'all';
+  private start: number = 0;
 
   public threads: Array<IThread> = [];
 
@@ -32,7 +33,7 @@ export class ThreadsPage implements OnInit {
         console.log(self.threads);
       });
       */
-    this.dataService.getThreadsRef().orderByKey().on('value', function (snapshot) {
+    this.dataService.getThreadsRef().limitToLast(10).on('value', function (snapshot) {
       self.threads = self.itemsService.reversedItems(self.mappingsService.getThreads(snapshot));
       console.log(self.threads);
     });
@@ -63,5 +64,15 @@ export class ThreadsPage implements OnInit {
     this.navCtrl.push(ThreadCommentsPage, {
       threadKey: thread.key
     });
+  }
+
+
+  fetchNextThreads(infiniteScroll) {
+    this.start += 4;
+    console.log('Begin async operation');
+    console.log(infiniteScroll);
+
+
+
   }
 }

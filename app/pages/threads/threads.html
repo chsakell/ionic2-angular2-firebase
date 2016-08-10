@@ -67,4 +67,8 @@
       </ion-card>
     </ion-item>
   </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="fetchNextThreads($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
