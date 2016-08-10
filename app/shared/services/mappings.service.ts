@@ -40,12 +40,16 @@ export class MappingsService {
 
         Object.keys(snapshot.val()).map((key: any) => {
             let comment: any = list[key];
+            //console.log(comment.votes);
+            this.itemsService.groupByBoolean(comment.votes, true);
             comments.push({
                 key: key,
                 text: comment.text,
                 thread: comment.thread,
                 dateCreated: comment.dateCreated,
-                user: comment.user
+                user: comment.user,
+                votesUp : this.itemsService.groupByBoolean(comment.votes, true),
+                votesDown : this.itemsService.groupByBoolean(comment.votes, false)
             });
         });
 

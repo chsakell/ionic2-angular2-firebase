@@ -30,13 +30,13 @@
                     <ion-col>
                         <button primary clear small (click)="vote(true,comment)">
         <ion-icon name="arrow-dropup"></ion-icon>
-        <div>12</div>
+        <div>{{comment.votesUp}}</div>
       </button>
                     </ion-col>
                     <ion-col>
                         <button primary clear small (click)="vote(false,comment)">
         <ion-icon name="arrow-dropdown"></ion-icon>
-        <div>4</div>
+        <div>{{comment.votesDown}}</div>
       </button>
                     </ion-col>
                     <ion-col center text-center>

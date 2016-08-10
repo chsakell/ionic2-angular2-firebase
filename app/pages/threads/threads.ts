@@ -29,7 +29,6 @@ export class ThreadsPage implements OnInit {
     var self = this;
     this.dataService.getTotalThreads().then(function (snapshot) {
       self.start = snapshot.val();
-      console.log(self.start);
       if (self.start != null) {
         self.loadThreads(true);
       }
@@ -56,7 +55,6 @@ export class ThreadsPage implements OnInit {
       self.itemsService.reversedItems<IThread>(self.mappingsService.getThreads(snapshot)).forEach(function (thread) {
         self.threads.push(thread);
       });
-      console.log(self.threads);
       self.start -= (self.pageSize + 1);
     });
   }

@@ -14,6 +14,8 @@ export interface IComment {
     text: string;
     user: string;
     dateCreated: string;
+    votesUp: number;
+    votesDown: number;
 }
 
 export interface Predicate<T> {

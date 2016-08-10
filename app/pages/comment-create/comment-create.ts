@@ -55,7 +55,9 @@ export class CommentCreatePage implements OnInit {
         text: commentForm.comment,
         thread: this.threadKey,
         user: 'chsakell',
-        dateCreated: new Date().toString()
+        dateCreated: new Date().toString(),
+        votesUp: null,
+        votesDown : null
       };
 
 

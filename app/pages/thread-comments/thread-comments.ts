@@ -27,7 +27,6 @@ export class ThreadCommentsPage implements OnInit {
 
         self.dataService.getThreadCommentsRef(self.threadKey).on('value', function (snapshot) {
             self.comments = self.mappingsService.getComments(snapshot);
-            console.log(self.comments);
         });
     }
 
@@ -51,7 +50,6 @@ export class ThreadCommentsPage implements OnInit {
     }
 
     vote(like: boolean, comment: IComment) {
-        console.log(comment);
         this.dataService.voteComment(comment.key, like, 'chsakell');
     }
 

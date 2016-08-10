@@ -12,6 +12,19 @@ export class ItemsService {
         return <T[]>_.reverse(array);
     }
 
+    groupByBoolean(object, value: boolean): number {
+        let result: number = 0;
+        if (object == null)
+            return result;
+
+        _.map(_.shuffle(object), function (val) {
+            if (val === value)
+                result++;
+        });
+
+        return result;
+    }
+
     /*
     Returns object's keys lenght
     */
