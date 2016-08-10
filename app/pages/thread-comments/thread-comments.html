@@ -28,15 +28,15 @@
 
                 <ion-row>
                     <ion-col>
-                        <button primary clear small>
-        <ion-icon name="thumbs-up"></ion-icon>
-        <div>12 Likes</div>
+                        <button primary clear small (click)="vote(true,comment)">
+        <ion-icon name="arrow-dropup"></ion-icon>
+        <div>12</div>
       </button>
                     </ion-col>
                     <ion-col>
-                        <button primary clear small>
-        <ion-icon name="text"></ion-icon>
-        <div>4 Comments</div>
+                        <button primary clear small (click)="vote(false,comment)">
+        <ion-icon name="arrow-dropdown"></ion-icon>
+        <div>4</div>
       </button>
                     </ion-col>
                     <ion-col center text-center>

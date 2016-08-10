@@ -76,6 +76,7 @@ export class ThreadsPage implements OnInit {
           position: 'bottom'
         });
         toast.present();
+        this.loadThreads(true);
       }
     });
 

@@ -35,6 +35,7 @@ export class DataService {
     loadThreads() {
         return this.threadsRef.once('value');
     }
+
     submitThread(thread: IThread) {
 
         var newThreadRef = this.threadsRef.push();
@@ -58,5 +59,10 @@ export class DataService {
                 let numberOfComments = snapshot == null ? 0 : snapshot.val();
                 this.threadsRef.child(threadKey + '/comments').set(numberOfComments + 1);
             });
+    }
+
+    voteComment(commentKey: string, like: boolean, user: string) {
+        let commentRef = this.commentsRef.child(commentKey + '/votes/' + user);
+        commentRef.set(like);
     }
 }

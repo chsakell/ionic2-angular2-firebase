@@ -50,18 +50,23 @@ export class ThreadCommentsPage implements OnInit {
         modalPage.present();
     }
 
+    vote(like: boolean, comment: IComment) {
+        console.log(comment);
+        this.dataService.voteComment(comment.key, like, 'chsakell');
+    }
+
     showCommentActions() {
         let actionSheet = this.actionSheeCtrl.create({
             title: 'Actions',
             buttons: [
                 {
-                    text: 'Add comment',
-                    icon: 'create',
+                    text: 'Add to favorites',
+                    icon: 'heart',
                     handler: () => {
 
                     }
                 }, {
-                    text: 'Report abuse',
+                    text: 'Report thread',
                     icon: 'warning',
                     role: 'destructive',
                     handler: () => {
