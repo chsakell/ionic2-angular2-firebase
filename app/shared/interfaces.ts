@@ -18,6 +18,11 @@ export interface IComment {
     votesDown: number;
 }
 
+export interface UserCredentials {
+    email: string;
+    password: string;
+}
+
 export interface Predicate<T> {
     (item: T): boolean;
 }

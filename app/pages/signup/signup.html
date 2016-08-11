@@ -1,0 +1,29 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Signup</ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding>
+    <form [formGroup]="createFirebaseAccountForm" (ngSubmit)="onSubmit(createFirebaseAccountForm.value)">
+        <ion-item [class.error]="!username.valid && username.touched">
+            <ion-label floating>Username</ion-label>
+            <ion-input type="text" value="" [formControl]="username"></ion-input>
+        </ion-item>
+        <div *ngIf="username.hasError('required') && username.touched" class="error-box">* Username is required.</div>
+        <div *ngIf="username.hasError('minlength') && username.touched" class="error-box">* Minimum password length is 8.</div>
+        <ion-item [class.error]="!email.valid && email.touched">
+            <ion-label floating>Email address</ion-label>
+            <ion-input type="text" value="" [formControl]="email"></ion-input>
+        </ion-item>
+        <div *ngIf="email.hasError('required') && email.touched" class="error-box">* Email is required.</div>
+        <div *ngIf="email.hasError('pattern') && email.touched" class="error-box">* Enter a valid email address.</div>
+        <ion-item [class.error]="!password.valid && password.touched">
+            <ion-label floating>Password</ion-label>
+            <ion-input type="password" value="" [formControl]="password"></ion-input>
+        </ion-item>
+        <div *ngIf="password.hasError('required') && password.touched" class="error-box">* Password is required.</div>
+        <div *ngIf="password.hasError('minlength') && password.touched" class="error-box">* Minimum password length is 5.</div>
+        <br/><br/>
+        <button type="submit" class="custom-button" [disabled]="!createFirebaseAccountForm.valid" block>Submit</button>
+    </form>
+</ion-content>
