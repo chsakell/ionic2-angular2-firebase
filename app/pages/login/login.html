@@ -19,5 +19,7 @@
         <div *ngIf="password.hasError('minlength') && password.touched" class="error-box">* Minimum password length is 5.</div>
         <br/><br/>
         <button type="submit" class="custom-button" [disabled]="!loginFirebaseAccountForm.valid" block>Sign in</button>
+        <br/>
+        <button clear (click)="register()">Register a firebase account</button>
     </form>
 </ion-content>

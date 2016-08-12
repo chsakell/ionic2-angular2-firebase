@@ -41,6 +41,7 @@ export class DataService {
 
         var newThreadRef = this.threadsRef.push();
         var newPriority = this.totalThreads + 1;
+        console.log(newPriority);
         this.statisticsRef.child('threads').set(newPriority);
         console.log(newPriority);
         return newThreadRef.setWithPriority(thread, newPriority);

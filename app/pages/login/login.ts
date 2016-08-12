@@ -3,6 +3,7 @@ import { Modal, NavController, ViewController, LoadingController, ToastControlle
 import {FORM_DIRECTIVES, FormBuilder, FormGroup, Validators, AbstractControl} from '@angular/forms';
 
 import { TabsPage } from '../tabs/tabs';
+import { SignupPage } from '../signup/signup';
 import { IThread, UserCredentials } from '../../shared/interfaces';
 import { DataService } from '../../shared/services/data.service';
 import { AuthService } from '../../shared/services/auth.service';
@@ -72,4 +73,8 @@ export class LoginPage implements OnInit {
                 });
         }
     }
+
+    register() {
+            this.nav.push(SignupPage);
+        }
 }

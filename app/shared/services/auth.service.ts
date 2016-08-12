@@ -20,6 +20,10 @@ export class AuthService {
         return firebase.auth().signInWithEmailAndPassword(email, password);
     }
 
+    signOut() {
+        return firebase.auth().signOut();
+    }
+
     addUser(username: string, uid: string) {
         this.usersRef.child(uid).update({
             username: username

@@ -2,6 +2,8 @@ import {Component, ViewChild } from '@angular/core';
 import {Platform, ionicBootstrap, Nav, MenuController} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 
+import { AuthService } from './shared/services/auth.service';
+
 import {TabsPage} from './pages/tabs/tabs';
 import { LoginPage } from './pages/login/login';
 import { SignupPage } from './pages/signup/signup';
@@ -17,6 +19,7 @@ export class ForumApp {
   private loginPage: LoginPage;
 
   constructor(platform: Platform,
+    private authService: AuthService,
     private menu: MenuController) {
     this.rootPage = TabsPage;
 
@@ -35,6 +38,14 @@ export class ForumApp {
       this.nav.push(LoginPage);
     } else if (page === 'signup')
       this.nav.push(SignupPage);
+  }
+
+  signout() {
+    var self = this;
+    self.authService.signOut().then(() => {
+      self.menu.close();
+      self.nav.push(LoginPage);
+    });
   }
 }
 
