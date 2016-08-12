@@ -32,14 +32,13 @@ export class ThreadsPage implements OnInit {
 
   ngOnInit() {
     var self = this;
-    /*
+
     if (self.authService.getLoggedInUser() === null) {
-      this.navCtrl.push(LoginPage);
+      //
     } else {
       self.loadThreads(true);
     }
-    */
-    self.loadThreads(true);
+
   }
 
   loadThreads(fromStart: boolean) {

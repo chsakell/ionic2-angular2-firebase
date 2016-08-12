@@ -26,7 +26,6 @@ export class LoginPage implements OnInit {
         private authService: AuthService) { }
 
     ngOnInit() {
-        console.log('in user login..');
         this.loginFirebaseAccountForm = this.fb.group({
             'email': ['', Validators.compose([Validators.required])],
             'password': ['', Validators.compose([Validators.required, Validators.minLength(5)])]
@@ -75,6 +74,6 @@ export class LoginPage implements OnInit {
     }
 
     register() {
-            this.nav.push(SignupPage);
-        }
+        this.nav.push(SignupPage);
+    }
 }

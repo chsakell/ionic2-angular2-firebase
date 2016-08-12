@@ -5,6 +5,7 @@ import {FORM_DIRECTIVES, FormBuilder, FormGroup, Validators, AbstractControl} fr
 import { IThread, UserCredentials } from '../../shared/interfaces';
 import { DataService } from '../../shared/services/data.service';
 import { AuthService } from '../../shared/services/auth.service';
+import { CheckedValidator } from '../../shared/validators/checked.validator';
 
 @Component({
     templateUrl: 'build/pages/signup/signup.html',
@@ -16,6 +17,8 @@ export class SignupPage implements OnInit {
     username: AbstractControl;
     email: AbstractControl;
     password: AbstractControl;
+    dateOfBirth: AbstractControl;
+    terms: AbstractControl;
 
     constructor(private nav: NavController,
         private loadingCtrl: LoadingController,
@@ -26,16 +29,29 @@ export class SignupPage implements OnInit {
         private authService: AuthService) { }
 
     ngOnInit() {
-        console.log('in user create..');
         this.createFirebaseAccountForm = this.fb.group({
             'username': ['', Validators.compose([Validators.required, Validators.minLength(8)])],
             'email': ['', Validators.compose([Validators.required])],
-            'password': ['', Validators.compose([Validators.required, Validators.minLength(5)])]
+            'password': ['', Validators.compose([Validators.required, Validators.minLength(5)])],
+            'dateOfBirth': [new Date().toISOString().slice(0, 10), Validators.compose([Validators.required])],
+            'terms': [false, CheckedValidator.isChecked]
         });
 
         this.username = this.createFirebaseAccountForm.controls['username'];
         this.email = this.createFirebaseAccountForm.controls['email'];
         this.password = this.createFirebaseAccountForm.controls['password'];
+        this.dateOfBirth = this.createFirebaseAccountForm.controls['dateOfBirth'];
+        this.terms = this.createFirebaseAccountForm.controls['terms'];
+    }
+
+    getFormattedDate(): string {
+        let now = new Date();
+        let mm = now.getMonth() + 1;
+        let dd = now.getDate();
+
+        let formattedDate = [now.getFullYear(), !mm[1] && '0', mm, !dd[1] && '0', dd].join('-');
+        console.log(formattedDate);
+        return formattedDate;
     }
 
     onSubmit(signupForm: any): void {
