@@ -32,12 +32,14 @@ export class ThreadsPage implements OnInit {
 
   ngOnInit() {
     var self = this;
-
+    /*
     if (self.authService.getLoggedInUser() === null) {
       this.navCtrl.push(LoginPage);
     } else {
       self.loadThreads(true);
     }
+    */
+    self.loadThreads(true);
   }
 
   loadThreads(fromStart: boolean) {
@@ -54,7 +56,7 @@ export class ThreadsPage implements OnInit {
       } else {
         self.start = 0;
         self.favoriteThreadKeys = [];
-        return self.dataService.getFavoriteThreads('chsakell').then(function (dataSnapshot) {
+        return self.dataService.getFavoriteThreads(self.authService.getLoggedInUser().uid).then(function (dataSnapshot) {
           let favoriteThreads = dataSnapshot.val();
           self.itemsService.getKeys(favoriteThreads).forEach(function (threadKey) {
             self.start++;
@@ -85,6 +87,7 @@ export class ThreadsPage implements OnInit {
             self.threads.unshift(self.mappingsService.getThread(dataSnapshot.val(), key));
           });
       });
+      self.start -= (self.pageSize + 1);
     }
   }
 

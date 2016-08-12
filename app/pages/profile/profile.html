@@ -1,6 +1,73 @@
 <ion-header>
     <ion-navbar>
-        <ion-title>Profile</ion-title>
+        <ion-title>{{username}}</ion-title>
     </ion-navbar>
 </ion-header>
-<ion-content></ion-content>
+<ion-content>
+    <ion-list no-border>
+
+        <ion-list-header>
+            Basic Info
+        </ion-list-header>
+
+        <ion-item>
+            <ion-icon name='mail' item-left></ion-icon>
+            Email
+            <ion-note item-right>
+                chsakell.gmail.com
+            </ion-note>
+        </ion-item>
+
+        <ion-item>
+            <ion-icon name='calendar' item-left></ion-icon>
+            Date of Birth
+            <ion-note item-right>
+                20/10/1985
+            </ion-note>
+        </ion-item>
+
+        <ion-item>
+            <ion-icon name='person' item-left></ion-icon>
+            Firebase ID
+            <ion-note item-right>
+                543543543543
+            </ion-note>
+        </ion-item>
+
+    </ion-list>
+
+
+    <ion-list>
+
+        <ion-list-header>
+            Activity
+        </ion-list-header>
+
+        <ion-item>
+            # Threads
+            <ion-icon name='text' item-left></ion-icon>
+            <ion-note item-right>53534</ion-note>
+        </ion-item>
+
+        <ion-item>
+            # Comments
+            <ion-icon name='quote' item-left></ion-icon>
+            <ion-note item-right>5345</ion-note>
+        </ion-item>
+
+
+    </ion-list>
+    <ion-list>
+
+        <ion-list-header>
+            Settings
+        </ion-list-header>
+
+        <ion-item>
+            # Threads
+            <ion-icon name='text' item-left></ion-icon>
+            <ion-note item-right>53534</ion-note>
+        </ion-item>
+
+    </ion-list>
+</ion-content>

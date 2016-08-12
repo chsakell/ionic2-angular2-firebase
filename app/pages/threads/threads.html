@@ -25,7 +25,7 @@
 
 <ion-content>
 
-  <ion-refresher (ionRefresh)="reloadThreads($event)">
+  <ion-refresher (ionRefresh)="reloadThreads($event)" *ngIf="segment=='all'">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
@@ -67,7 +67,7 @@
     </ion-item>
   </ion-list>
 
-  <ion-infinite-scroll (ionInfinite)="fetchNextThreads($event)" threshold="10px">
+  <ion-infinite-scroll (ionInfinite)="fetchNextThreads($event)" threshold="10px" *ngIf="start > 0">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>
