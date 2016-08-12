@@ -7,8 +7,11 @@ import { AuthService } from '../../shared/services/auth.service';
 import { DataService } from '../../shared/services/data.service';
 import { MappingsService } from '../../shared/services/mappings.service';
 
+import { TimeAgoPipe } from 'angular2-moment';
+
 @Component({
     templateUrl: 'build/pages/thread-comments/thread-comments.html',
+    pipes: [TimeAgoPipe]
 })
 export class ThreadCommentsPage implements OnInit {
     threadKey: string;
@@ -25,7 +28,6 @@ export class ThreadCommentsPage implements OnInit {
     ngOnInit() {
         var self = this;
         self.threadKey = self.navParams.get('threadKey');
-        console.log(self.threadKey);
 
         self.dataService.getThreadCommentsRef(self.threadKey).on('value', function (snapshot) {
             self.comments = self.mappingsService.getComments(snapshot);
