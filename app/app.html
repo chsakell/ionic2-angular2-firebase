@@ -9,7 +9,7 @@
             </ion-list-header>
 
             <ion-item (click)="openPage('login')" *ngIf="!isUserLoggedIn()">
-                <ion-icon name='unlock' item-left></ion-icon>
+                <ion-icon name='log-in' item-left></ion-icon>
                 Login
                 <ion-icon name='arrow-dropright' item-right secondary></ion-icon>
             </ion-item>
@@ -19,7 +19,7 @@
                 <ion-icon name='arrow-dropright' item-right secondary></ion-icon>
             </ion-item>
             <ion-item (click)="signout()" *ngIf="isUserLoggedIn()">
-                <ion-icon name='exit' item-left></ion-icon>
+                <ion-icon name='log-out' item-left></ion-icon>
                 Sign out
                 <ion-icon name='arrow-dropright' item-right secondary></ion-icon>
             </ion-item>

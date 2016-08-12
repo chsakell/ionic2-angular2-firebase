@@ -79,4 +79,8 @@ export class DataService {
     getUsername(userUid: string) {
         return this.usersRef.child(userUid + '/username').once('value');
     }
+
+    getUser(userUid: string) {
+        return this.usersRef.child(userUid).once('value');
+    }
 }

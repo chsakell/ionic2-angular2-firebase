@@ -8,8 +8,10 @@ import { DataService } from '../../shared/services/data.service';
   templateUrl: 'build/pages/profile/profile.html'
 })
 export class ProfilePage implements OnInit {
-
+  userDataLoaded: boolean = false;
   username: string;
+  userProfile = {};
+  firebaseAccount = {};
 
   constructor(private navCtrl: NavController,
     private authService: AuthService,
@@ -19,10 +21,31 @@ export class ProfilePage implements OnInit {
 
   ngOnInit() {
     var self = this;
-    self.dataService.getUsername(self.authService.getLoggedInUser().uid)
-    .then(function(snapshot) {
-      self.username = snapshot.val();
-      console.log(self.username);
+
+    this.getUserData().then(function (snapshot) {
+      let userData: any = snapshot.val();
+      self.userProfile = {
+        username: userData.username,
+        dateOfBirth: userData.dateOfBirth,
+        totalFavorites: userData.hasOwnProperty('favorites') === true ?
+          Object.keys(userData.favorites).length : 0
+      };
+      self.userDataLoaded = true;
     });
   }
+
+  getUserData() {
+    var self = this;
+
+    self.firebaseAccount = self.authService.getLoggedInUser();
+    return self.dataService.getUser(self.authService.getLoggedInUser().uid);
+  }
+
+  getFirebaseAccount() {
+    var self = this;
+
+    console.log(self.firebaseAccount);
+  }
+
+
 }

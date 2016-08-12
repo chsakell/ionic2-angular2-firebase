@@ -1,10 +1,10 @@
 <ion-header>
     <ion-navbar>
-        <ion-title>{{username}}</ion-title>
+        <ion-title>{{userProfile.username}}</ion-title>
     </ion-navbar>
 </ion-header>
 <ion-content>
-    <ion-list no-border>
+    <ion-list no-border *ngIf="userDataLoaded">
 
         <ion-list-header>
             Basic Info
@@ -14,7 +14,7 @@
             <ion-icon name='mail' item-left></ion-icon>
             Email
             <ion-note item-right>
-                chsakell.gmail.com
+                {{firebaseAccount.email}}
             </ion-note>
         </ion-item>
 
@@ -22,22 +22,21 @@
             <ion-icon name='calendar' item-left></ion-icon>
             Date of Birth
             <ion-note item-right>
-                20/10/1985
+                {{userProfile.dateOfBirth}}
             </ion-note>
         </ion-item>
 
         <ion-item>
-            <ion-icon name='person' item-left></ion-icon>
-            Firebase ID
+            <ion-icon name='cloud-upload' item-left></ion-icon>
             <ion-note item-right>
-                543543543543
+                {{firebaseAccount.U}}
             </ion-note>
         </ion-item>
 
     </ion-list>
 
 
-    <ion-list>
+    <ion-list *ngIf="userDataLoaded">
 
         <ion-list-header>
             Activity
@@ -54,7 +53,11 @@
             <ion-icon name='quote' item-left></ion-icon>
             <ion-note item-right>5345</ion-note>
         </ion-item>
-
+        <ion-item>
+            # Favorites
+            <ion-icon name='heart' item-left></ion-icon>
+            <ion-note item-right>{{userProfile.totalFavorites}}</ion-note>
+        </ion-item>
 
     </ion-list>
     <ion-list>
@@ -64,9 +67,9 @@
         </ion-list-header>
 
         <ion-item>
-            # Threads
-            <ion-icon name='text' item-left></ion-icon>
-            <ion-note item-right>53534</ion-note>
+             <ion-icon name='ios-color-palette' item-left></ion-icon>
+             <ion-label>Theme</ion-label>
+            <ion-toggle></ion-toggle>
         </ion-item>
 
     </ion-list>
