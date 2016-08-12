@@ -1,4 +1,4 @@
-import {Component, ViewChild } from '@angular/core';
+import {Component, ViewChild, OnInit } from '@angular/core';
 import {Platform, ionicBootstrap, Nav, MenuController} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 
@@ -12,7 +12,7 @@ import { APP_PROVIDERS } from './app.providers';
 @Component({
   templateUrl: 'build/app.html'
 })
-export class ForumApp {
+export class ForumApp implements OnInit {
   @ViewChild('content') nav: Nav;
 
   private rootPage: any;
@@ -30,6 +30,19 @@ export class ForumApp {
     });
   }
 
+  ngOnInit() {
+    var self = this;
+
+    this.authService.onAuthStateChanged(function (user) {
+      if (user === null) {
+        self.menu.close();
+        self.nav.push(LoginPage);
+      } else {
+
+      }
+    });
+  }
+
   openPage(page) {
     // close the menu when clicking a link from the menu
     this.menu.close();
@@ -42,10 +55,14 @@ export class ForumApp {
 
   signout() {
     var self = this;
+    self.menu.close();
+    self.authService.signOut();
+    /*
     self.authService.signOut().then(() => {
       self.menu.close();
       self.nav.push(LoginPage);
     });
+    */
   }
 
   isUserLoggedIn(): boolean {

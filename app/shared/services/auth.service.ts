@@ -34,4 +34,8 @@ export class AuthService {
         return firebase.auth().currentUser;
     }
 
+    onAuthStateChanged(callback) {
+        return firebase.auth().onAuthStateChanged(callback);
+    }
+
 }
