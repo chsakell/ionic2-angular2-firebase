@@ -24,9 +24,10 @@ export class AuthService {
         return firebase.auth().signOut();
     }
 
-    addUser(username: string, uid: string) {
+    addUser(username: string, dateOfBirth: string, uid: string) {
         this.usersRef.child(uid).update({
-            username: username
+            username: username,
+            dateOfBirth: dateOfBirth
         });
     }
 

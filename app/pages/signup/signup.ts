@@ -56,6 +56,7 @@ export class SignupPage implements OnInit {
 
     onSubmit(signupForm: any): void {
         var self = this;
+
         if (this.createFirebaseAccountForm.valid) {
 
             let loader = this.loadingCtrl.create({
@@ -68,14 +69,13 @@ export class SignupPage implements OnInit {
                 password: signupForm.password
             };
 
-
             loader.present();
 
             console.log(newUser);
             this.authService.registerUser(newUser)
                 .then(function (result) {
                     console.log(self.authService.getLoggedInUser());
-                    self.authService.addUser(signupForm.username, self.authService.getLoggedInUser().uid);
+                    self.authService.addUser(signupForm.username, signupForm.dateOfBirth, self.authService.getLoggedInUser().uid);
                     loader.dismiss()
                         .then(() => {
                             self.viewCtrl.dismiss({
