@@ -3,17 +3,28 @@
         <ion-title>Pages</ion-title>
     </ion-toolbar>
     <ion-content>
-        <ion-list>
-            <button ion-item (click)="openPage('login')">
-        Login
-      </button>
-            <button ion-item (click)="openPage('signup')">
-        Signup
-      </button>
-      <button ion-item (click)="signout()">
-        Sign out
-      </button>
+        <ion-list no-border>
+            <ion-list-header>
+                Account
+            </ion-list-header>
+
+            <ion-item (click)="openPage('login')" *ngIf="!isUserLoggedIn()">
+                <ion-icon name='unlock' item-left></ion-icon>
+                Login
+                <ion-icon name='arrow-dropright' item-right secondary></ion-icon>
+            </ion-item>
+            <ion-item (click)="openPage('signup')" *ngIf="!isUserLoggedIn()">
+                <ion-icon name='person-add' item-left></ion-icon>
+                Register
+                <ion-icon name='arrow-dropright' item-right secondary></ion-icon>
+            </ion-item>
+            <ion-item (click)="signout()" *ngIf="isUserLoggedIn()">
+                <ion-icon name='power' item-left></ion-icon>
+                Sign out
+                <ion-icon name='arrow-dropright' item-right secondary></ion-icon>
+            </ion-item>
         </ion-list>
+
     </ion-content>
 </ion-menu>
 <ion-nav #content [root]="rootPage"></ion-nav>

@@ -47,6 +47,11 @@ export class ForumApp {
       self.nav.push(LoginPage);
     });
   }
+
+  isUserLoggedIn(): boolean {
+    let user = this.authService.getLoggedInUser();
+    return user !== null;
+  }
 }
 
 ionicBootstrap(ForumApp, [APP_PROVIDERS]);
