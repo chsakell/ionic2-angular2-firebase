@@ -46,12 +46,12 @@ export class DataService {
         return newThreadRef.setWithPriority(thread, newPriority);
     }
 
-    addThreadToFavorites(user: string, threadKey: string) {
-        return this.usersRef.child(user + '/favorites/' + threadKey).set(true);
+    addThreadToFavorites(userKey: string, threadKey: string) {
+        return this.usersRef.child(userKey + '/favorites/' + threadKey).set(true);
     }
 
     getFavoriteThreads(user: string) {
-        return this.usersRef.child(user + '/favorites/' ).once('value');
+        return this.usersRef.child(user + '/favorites/').once('value');
     }
 
     loadComments(threadKey: string) {
@@ -73,5 +73,9 @@ export class DataService {
     voteComment(commentKey: string, like: boolean, user: string) {
         let commentRef = this.commentsRef.child(commentKey + '/votes/' + user);
         commentRef.set(like);
+    }
+
+    getUsername(userUid: string) {
+        return this.usersRef.child(userUid + '/username').once('value');
     }
 }

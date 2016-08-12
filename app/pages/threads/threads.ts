@@ -4,6 +4,8 @@ import { NavController, ModalController, ToastController  } from 'ionic-angular'
 import { IThread } from '../../shared/interfaces';
 import { ThreadCreatePage } from '../thread-create/thread-create';
 import { ThreadCommentsPage } from '../thread-comments/thread-comments';
+import { LoginPage } from '../login/login';
+import { AuthService } from '../../shared/services/auth.service';
 import { DataService } from '../../shared/services/data.service';
 import { MappingsService } from '../../shared/services/mappings.service';
 import { ItemsService } from '../../shared/services/items.service';
@@ -23,13 +25,19 @@ export class ThreadsPage implements OnInit {
   constructor(private navCtrl: NavController,
     private modalCtrl: ModalController,
     private toastCtrl: ToastController,
+    private authService: AuthService,
     private dataService: DataService,
     private mappingsService: MappingsService,
     private itemsService: ItemsService) { }
 
   ngOnInit() {
     var self = this;
-    self.loadThreads(true);
+
+    if (self.authService.getLoggedInUser() === null) {
+      this.navCtrl.push(LoginPage);
+    } else {
+      self.loadThreads(true);
+    }
   }
 
   loadThreads(fromStart: boolean) {

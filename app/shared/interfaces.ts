@@ -4,7 +4,7 @@ export interface IThread {
     question: string;
     category: string;
     dateCreated: string;
-    user: string;
+    user: IUser;
     comments: number;
 }
 
@@ -12,7 +12,7 @@ export interface IComment {
     key?: string;
     thread: string;
     text: string;
-    user: string;
+    user: IUser;
     dateCreated: string;
     votesUp: number;
     votesDown: number;
@@ -21,6 +21,11 @@ export interface IComment {
 export interface UserCredentials {
     email: string;
     password: string;
+}
+
+export interface IUser {
+    uid: string;
+    username: string;
 }
 
 export interface Predicate<T> {

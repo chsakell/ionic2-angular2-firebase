@@ -16,9 +16,13 @@ export class AuthService {
         return firebase.auth().createUserWithEmailAndPassword(user.email, user.password);
     }
 
+    signInUser(email: string, password: string) {
+        return firebase.auth().signInWithEmailAndPassword(email, password);
+    }
+
     addUser(username: string, uid: string) {
-        this.usersRef.child(username).update({
-            uid: uid
+        this.usersRef.child(uid).update({
+            username: username
         });
     }
 

@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 
 import { IThread, IComment } from '../interfaces';
+import { DataService } from '../services//data.service';
 import { ItemsService } from '../services/items.service';
 
 @Injectable()
 export class MappingsService {
 
-    constructor(private itemsService: ItemsService) { }
+    constructor(private dataService: DataService,
+        private itemsService: ItemsService) { }
 
     getThreads(snapshot: any): Array<IThread> {
         let threads: Array<IThread> = [];
@@ -23,7 +25,7 @@ export class MappingsService {
                 question: thread.question,
                 category: thread.category,
                 dateCreated: thread.dateCreated,
-                user: thread.user,
+                user: { uid: thread.user.uid, username: thread.user.username },
                 comments: thread.comments == null ? 0 : thread.comments
             });
         });
@@ -32,7 +34,7 @@ export class MappingsService {
     }
 
     getThread(snapshot: any, key: string): IThread {
-        
+
         let thread: IThread = {
             key: key,
             title: snapshot.title,

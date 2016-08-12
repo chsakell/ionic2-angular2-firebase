@@ -3,6 +3,7 @@ import { Modal, NavController, ViewController, LoadingController } from 'ionic-a
 import {FORM_DIRECTIVES, FormBuilder, FormGroup, Validators, AbstractControl} from '@angular/forms';
 
 import { IThread } from '../../shared/interfaces';
+import { AuthService } from  '../../shared/services/auth.service';
 import { DataService } from '../../shared/services/data.service';
 
 @Component({
@@ -20,6 +21,7 @@ export class ThreadCreatePage implements OnInit {
     private loadingCtrl: LoadingController,
     private viewCtrl: ViewController,
     private fb: FormBuilder,
+    private authService: AuthService,
     private dataService: DataService) { }
 
   ngOnInit() {
@@ -48,32 +50,44 @@ export class ThreadCreatePage implements OnInit {
         dismissOnPageChange: true
       });
 
-      let newThread: any = {
-        title: thread.title,
-        question: thread.question,
-        category: thread.category,
-        user: 'chsakell',
-        dateCreated: new Date().toString(),
-        comments: null
-      };
-
-
       loader.present();
 
-      this.dataService.submitThread(newThread)
-        .then(function (snapshot) {
+      let uid = self.authService.getLoggedInUser().uid;
+      self.dataService.getUsername(uid).then(function (snapshot) {
+        let username = snapshot.val();
 
-          loader.dismiss()
-            .then(() => {
-              self.viewCtrl.dismiss({
-                thread: newThread
+        let newThread: IThread = {
+          key: null,
+          title: thread.title,
+          question: thread.question,
+          category: thread.category,
+          user: { uid: uid, username: username },
+          dateCreated: new Date().toString(),
+          comments: null
+        };
+
+        self.dataService.submitThread(newThread)
+          .then(function (snapshot) {
+
+            loader.dismiss()
+              .then(() => {
+                self.viewCtrl.dismiss({
+                  thread: newThread
+                });
               });
-            });
-        }, function (error) {
-          // The Promise was rejected.
-          console.error(error);
-          loader.dismiss();
-        });
+          }, function (error) {
+            // The Promise was rejected.
+            console.error(error);
+            loader.dismiss();
+          });
+      });
+
+
+
+
+
+
+
     }
   }
 

@@ -1,6 +1,23 @@
 <ion-header>
-    <ion-navbar>
+    <ion-navbar hideBackButton>
         <ion-title>Login</ion-title>
     </ion-navbar>
 </ion-header>
-<ion-content></ion-content>
+<ion-content padding>
+    <form [formGroup]="loginFirebaseAccountForm" (ngSubmit)="onSubmit(loginFirebaseAccountForm.value)">
+        <ion-item [class.error]="!email.valid && email.touched">
+            <ion-label floating>Email address</ion-label>
+            <ion-input type="text" value="" [formControl]="email"></ion-input>
+        </ion-item>
+        <div *ngIf="email.hasError('required') && email.touched" class="error-box">* Email is required.</div>
+        <div *ngIf="email.hasError('pattern') && email.touched" class="error-box">* Enter a valid email address.</div>
+        <ion-item [class.error]="!password.valid && password.touched">
+            <ion-label floating>Password</ion-label>
+            <ion-input type="password" value="" [formControl]="password"></ion-input>
+        </ion-item>
+        <div *ngIf="password.hasError('required') && password.touched" class="error-box">* Password is required.</div>
+        <div *ngIf="password.hasError('minlength') && password.touched" class="error-box">* Minimum password length is 5.</div>
+        <br/><br/>
+        <button type="submit" class="custom-button" [disabled]="!loginFirebaseAccountForm.valid" block>Sign in</button>
+    </form>
+</ion-content>

@@ -3,6 +3,7 @@ import { ActionSheetController, ModalController, ToastController, NavParams } fr
 
 import { CommentCreatePage } from '../comment-create/comment-create';
 import { IComment } from '../../shared/interfaces';
+import { AuthService } from '../../shared/services/auth.service';
 import { DataService } from '../../shared/services/data.service';
 import { MappingsService } from '../../shared/services/mappings.service';
 
@@ -17,6 +18,7 @@ export class ThreadCommentsPage implements OnInit {
         private modalCtrl: ModalController,
         private toastCtrl: ToastController,
         private navParams: NavParams,
+        private authService: AuthService,
         private dataService: DataService,
         private mappingsService: MappingsService) { }
 
@@ -50,7 +52,7 @@ export class ThreadCommentsPage implements OnInit {
     }
 
     vote(like: boolean, comment: IComment) {
-        this.dataService.voteComment(comment.key, like, 'chsakell');
+        this.dataService.voteComment(comment.key, like, this.authService.getLoggedInUser().uid);
     }
 
     showCommentActions() {
@@ -87,14 +89,24 @@ export class ThreadCommentsPage implements OnInit {
 
     addThreadToFavorites() {
         var self = this;
-        self.dataService.addThreadToFavorites('chsakell', self.threadKey)
-            .then(function () {
-                let toast = self.toastCtrl.create({
-                    message: 'Added to favorites',
-                    duration: 3000,
-                    position: 'top'
+        let currentUser = self.authService.getLoggedInUser();
+        if (currentUser != null) {
+            self.dataService.addThreadToFavorites(currentUser.uid, self.threadKey)
+                .then(function () {
+                    let toast = self.toastCtrl.create({
+                        message: 'Added to favorites',
+                        duration: 3000,
+                        position: 'top'
+                    });
+                    toast.present();
                 });
-                toast.present();
+        } else {
+            let toast = self.toastCtrl.create({
+                message: 'This action is available only for authenticated users',
+                duration: 3000,
+                position: 'top'
             });
+            toast.present();
+        }
     }
 }
