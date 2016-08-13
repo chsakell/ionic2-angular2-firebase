@@ -40,8 +40,7 @@
                 <ion-label>I accept terms of use</ion-label>
                 <ion-toggle [formControl]="terms"></ion-toggle>
             </ion-item>
-            <div *ngIf="terms.hasError('isChecked') && terms.touched" 
-            class="error-box">* You need to accept the terms of use.</div>   
+            <div *ngIf="terms.hasError('isChecked') && terms.touched" class="error-box">* You need to accept the terms of use.</div>
         </ion-list>
         <button type="submit" class="custom-button" [disabled]="!createFirebaseAccountForm.valid" block>Confirm</button>
     </form>

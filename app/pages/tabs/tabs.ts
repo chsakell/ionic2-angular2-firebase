@@ -3,7 +3,7 @@ import { NavController } from 'ionic-angular';
 
 import {ThreadsPage} from '../threads/threads';
 import {ProfilePage} from '../profile/profile';
-import {SettingsPage} from '../settings/settings';
+import {AboutPage} from '../about/about';
 import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
@@ -13,7 +13,7 @@ export class TabsPage {
 
     private threadsPage: any;
     private profilePage: any;
-    private settingsPage: any;
+    private aboutPage: any;
 
     constructor(private navCtrl: NavController,
                 private authService: AuthService) {
@@ -21,6 +21,6 @@ export class TabsPage {
         // should be each tab's root Page
         this.threadsPage = ThreadsPage;
         this.profilePage = ProfilePage;
-        this.settingsPage = SettingsPage;
+        this.aboutPage = AboutPage;
     }
 }
