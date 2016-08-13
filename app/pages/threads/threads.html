@@ -18,7 +18,7 @@
   </ion-navbar>
 
   <ion-toolbar no-border-top>
-    <ion-searchbar primary [(ngModel)]="queryText" (ionInput)="filterThreads()" placeholder="Search">
+    <ion-searchbar primary [(ngModel)]="queryText" (ionInput)="searchThreads()" placeholder="Search for a thread..">
     </ion-searchbar>
   </ion-toolbar>
 </ion-header>
@@ -67,7 +67,7 @@
     </ion-item>
   </ion-list>
 
-  <ion-infinite-scroll (ionInfinite)="fetchNextThreads($event)" threshold="10px" *ngIf="start > 0">
+  <ion-infinite-scroll (ionInfinite)="fetchNextThreads($event)" threshold="10px" *ngIf="(start > 0) && (queryText.trim().length == 0)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>

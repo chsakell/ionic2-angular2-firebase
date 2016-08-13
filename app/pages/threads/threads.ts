@@ -16,6 +16,7 @@ import { ItemsService } from '../../shared/services/items.service';
 export class ThreadsPage implements OnInit {
   segment: string = 'all';
   selectedSegment: string = this.segment;
+  queryText: string = '';
   private start: number;
   private pageSize: number = 3;
 
@@ -99,6 +100,25 @@ export class ThreadsPage implements OnInit {
     }
   }
 
+  searchThreads() {
+    var self = this;
+    console.log('searching..');
+    if (self.queryText.trim().length !== 0) {
+      console.log(self.queryText.length);
+      // empty current threads
+      self.threads = [];
+      self.dataService.loadThreads().then(function (snapshot) {
+        console.log(snapshot.val());
+        self.itemsService.reversedItems<IThread>(self.mappingsService.getThreads(snapshot)).forEach(function (thread) {
+          if (thread.title.toLowerCase().includes(self.queryText.toLowerCase()))
+            self.threads.push(thread);
+        });
+      });
+    } else { // text cleared..
+      this.loadThreads(true);
+    }
+  }
+
   createThread() {
     let modalPage = this.modalCtrl.create(ThreadCreatePage);
 
@@ -124,6 +144,7 @@ export class ThreadsPage implements OnInit {
   }
 
   reloadThreads(refresher) {
+    this.queryText = '';
     this.loadThreads(true).then(() => {
       refresher.complete();
     });
