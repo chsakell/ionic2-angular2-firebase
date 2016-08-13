@@ -40,7 +40,9 @@
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
     "ionic-plugin-keyboard",
-    "cordova-plugin-inappbrowser"
+    "cordova-plugin-inappbrowser",
+    "cordova-plugin-camera",
+    "cordova-plugin-file"
   ],
   "cordovaPlatforms": [],
   "scripts": {

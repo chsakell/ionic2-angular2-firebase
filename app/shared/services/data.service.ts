@@ -12,6 +12,7 @@ export class DataService {
     threadsRef: any = firebase.database().ref('threads');
     commentsRef: any = firebase.database().ref('comments');
     statisticsRef: any = firebase.database().ref('statistics');
+    storageRef: any = firebase.storage();
 
     constructor() { }
 
@@ -21,6 +22,10 @@ export class DataService {
 
     getThreadsRef() {
         return this.threadsRef;
+    }
+
+    getStorageRef() {
+        return this.storageRef.ref();
     }
 
     getThreadCommentsRef(threadKey: string) {
@@ -45,6 +50,12 @@ export class DataService {
 
     getFavoriteThreads(user: string) {
         return this.usersRef.child(user + '/favorites/').once('value');
+    }
+
+    setUserImage(uid: string, imageUri: string) {
+        this.usersRef.child(uid).update({
+            image: imageUri
+        });
     }
 
     loadComments(threadKey: string) {

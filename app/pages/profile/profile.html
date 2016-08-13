@@ -2,6 +2,9 @@
     <ion-navbar>
         <ion-title>{{userProfile.username}}</ion-title>
         <ion-buttons end>
+            <button (click)="openCamera()">
+            <ion-icon name="camera"></ion-icon>
+      </button>
             <button (click)="reload()">
         <ion-icon name="refresh"></ion-icon>
       </button>
@@ -72,8 +75,8 @@
         </ion-list-header>
 
         <ion-item>
-             <ion-icon name='ios-color-palette' item-left></ion-icon>
-             <ion-label>Theme</ion-label>
+            <ion-icon name='ios-color-palette' item-left></ion-icon>
+            <ion-label>Theme</ion-label>
             <ion-toggle></ion-toggle>
         </ion-item>
 

@@ -1,8 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController} from 'ionic-angular';
+import {NavController, LoadingController} from 'ionic-angular';
+import { Camera, CameraOptions } from 'ionic-native';
 
 import { AuthService } from '../../shared/services/auth.service';
 import { DataService } from '../../shared/services/data.service';
+
+declare var window: any;
 
 @Component({
   templateUrl: 'build/pages/profile/profile.html'
@@ -15,6 +18,7 @@ export class ProfilePage implements OnInit {
   userStatistics: any = {};
 
   constructor(private navCtrl: NavController,
+    private loadingCtrl: LoadingController,
     private authService: AuthService,
     private dataService: DataService) {
 
@@ -83,7 +87,98 @@ export class ProfilePage implements OnInit {
       });
   }
 
+  openCamera() {
+    var self = this;
+
+    let options: CameraOptions = {
+      quality: 95,
+      destinationType: Camera.DestinationType.DATA_URL,
+      sourceType: Camera.PictureSourceType.CAMERA,
+      allowEdit: true,
+      encodingType: Camera.EncodingType.PNG,
+      targetWidth: 100,
+      targetHeight: 100,
+      saveToPhotoAlbum: true
+    };
+
+    Camera.getPicture(options).then(imageData => {
+      const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
+        const byteCharacters = atob(b64Data);
+        const byteArrays = [];
+
+        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+          const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+          const byteNumbers = new Array(slice.length);
+          for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+          }
+
+          const byteArray = new Uint8Array(byteNumbers);
+
+          byteArrays.push(byteArray);
+        }
+
+        const blob = new Blob(byteArrays, { type: contentType });
+        return blob;
+      };
+
+      let capturedImage: Blob = b64toBlob(imageData, 'image/png');
+      self.startUploading(capturedImage);
+    }, error => {
+      console.log('ERROR -> ' + JSON.stringify(error));
+    });
+  }
+
   reload() {
     this.loadUserProfile();
+  }
+
+  startUploading(file) {
+
+    let self = this;
+    let uid = self.authService.getLoggedInUser().uid;
+    let progress: number = 0;
+    // display loader
+    let loader = this.loadingCtrl.create({
+      content: 'Uploading image..',
+    });
+    loader.present();
+
+    // Upload file and metadata to the object 'images/mountains.jpg'
+    var uploadTask = self.dataService.getStorageRef().child('images/' + uid + '/profile.png').put(file);
+
+    // Listen for state changes, errors, and completion of the upload.
+    uploadTask.on('state_changed',
+      function (snapshot) {
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      }, function (error) {
+        loader.dismiss().then(() => {
+          switch (error.code) {
+            case 'storage/unauthorized':
+              // User doesn't have permission to access the object
+              break;
+
+            case 'storage/canceled':
+              // User canceled the upload
+              break;
+
+            case 'storage/unknown':
+              // Unknown error occurred, inspect error.serverResponse
+              break;
+          }
+        });
+      }, function () {
+        loader.dismiss().then(() => {
+          // Upload completed successfully, now we can get the download URL
+          var downloadURL = uploadTask.snapshot.downloadURL;
+          self.setUserProfileImage(downloadURL);
+        });
+      });
+  }
+
+  setUserProfileImage(imageUrl) {
+    this.dataService.setUserImage(this.authService.getLoggedInUser().uid, imageUrl);
   }
 }
