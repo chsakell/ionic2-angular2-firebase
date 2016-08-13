@@ -12,6 +12,7 @@ export class ProfilePage implements OnInit {
   username: string;
   userProfile = {};
   firebaseAccount = {};
+  userStatistics: any = {};
 
   constructor(private navCtrl: NavController,
     private authService: AuthService,
@@ -20,6 +21,10 @@ export class ProfilePage implements OnInit {
   }
 
   ngOnInit() {
+    this.loadUserProfile();
+  }
+
+  loadUserProfile() {
     var self = this;
 
     this.getUserData().then(function (snapshot) {
@@ -32,6 +37,9 @@ export class ProfilePage implements OnInit {
       };
       self.userDataLoaded = true;
     });
+
+    self.getUserThreads();
+    self.getUserComments();
   }
 
   getUserData() {
@@ -47,5 +55,35 @@ export class ProfilePage implements OnInit {
     console.log(self.firebaseAccount);
   }
 
+  getUserThreads() {
+    var self = this;
 
+    self.dataService.getUserThreads(self.authService.getLoggedInUser().uid)
+      .then(function (snapshot) {
+        let userThreads: any = snapshot.val();
+        if (userThreads !== null) {
+          self.userStatistics.totalThreads = Object.keys(userThreads).length;
+        } else {
+          self.userStatistics.totalThread = 0;
+        }
+      });
+  }
+
+  getUserComments() {
+    var self = this;
+
+    self.dataService.getUserComments(self.authService.getLoggedInUser().uid)
+      .then(function (snapshot) {
+        let userComments: any = snapshot.val();
+        if (userComments !== null) {
+          self.userStatistics.totalComments = Object.keys(userComments).length;
+        } else {
+          self.userStatistics.totalComments = 0;
+        }
+      });
+  }
+
+  reload() {
+    this.loadUserProfile();
+  }
 }

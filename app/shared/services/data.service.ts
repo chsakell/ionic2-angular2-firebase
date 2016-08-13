@@ -83,4 +83,12 @@ export class DataService {
     getUser(userUid: string) {
         return this.usersRef.child(userUid).once('value');
     }
+
+    getUserThreads(userUid: string) {
+        return this.threadsRef.orderByChild('user/uid').equalTo(userUid).once('value');
+    }
+
+    getUserComments(userUid: string) {
+        return this.commentsRef.orderByChild('user/uid').equalTo(userUid).once('value');
+    }
 }

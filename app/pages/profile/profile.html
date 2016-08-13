@@ -1,6 +1,11 @@
 <ion-header>
     <ion-navbar>
         <ion-title>{{userProfile.username}}</ion-title>
+        <ion-buttons end>
+            <button (click)="reload()">
+        <ion-icon name="refresh"></ion-icon>
+      </button>
+        </ion-buttons>
     </ion-navbar>
 </ion-header>
 <ion-content>
@@ -45,13 +50,13 @@
         <ion-item>
             # Threads
             <ion-icon name='text' item-left></ion-icon>
-            <ion-note item-right>53534</ion-note>
+            <ion-note item-right>{{userStatistics.totalThreads}}</ion-note>
         </ion-item>
 
         <ion-item>
             # Comments
             <ion-icon name='quote' item-left></ion-icon>
-            <ion-note item-right>5345</ion-note>
+            <ion-note item-right>{{userStatistics.totalComments}}</ion-note>
         </ion-item>
         <ion-item>
             # Favorites

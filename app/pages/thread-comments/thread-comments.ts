@@ -68,14 +68,8 @@ export class ThreadCommentsPage implements OnInit {
                     handler: () => {
                         self.addThreadToFavorites();
                     }
-                }, {
-                    text: 'Report thread',
-                    icon: 'warning',
-                    role: 'destructive',
-                    handler: () => {
-                        console.log('Archive clicked');
-                    }
-                }, {
+                },
+                {
                     text: 'Cancel',
                     icon: 'close-circle',
                     role: 'cancel',
