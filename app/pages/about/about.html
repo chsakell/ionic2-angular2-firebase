@@ -23,13 +23,13 @@
                 </button>
         </ion-col>
             <ion-col text-center>
-                <button clear small danger>
+                <button clear small danger (click)="openUrl('https://twitter.com/chsakellsblog')">
                 <ion-icon name='twitter'></ion-icon>
                 Twitter
                 </button>
             </ion-col>
             <ion-col text-center>
-                <button clear small danger>
+                <button clear small danger (click)="openUrl('https://facebook.com/chsakells.blog')">
                 <ion-icon name='facebook'></ion-icon>
                 Facebook
                 </button>
@@ -48,7 +48,7 @@
         </ion-card-content>
         <ion-row no-padding>
             <ion-col>
-                <button clear small danger>
+                <button clear small danger (click)="openUrl('https://github.com/chsakell')">
                 <ion-icon name='git-network'></ion-icon>
                 Code
                 </button>
