@@ -12,14 +12,8 @@ export class DataService {
     threadsRef: any = firebase.database().ref('threads');
     commentsRef: any = firebase.database().ref('comments');
     statisticsRef: any = firebase.database().ref('statistics');
-    totalThreads: number;
 
-    constructor() {
-        var self = this;
-        self.statisticsRef.child('threads').on('value', function (snapshot) {
-            self.totalThreads = snapshot.val() == null ? 0 : snapshot.val();
-        });
-    }
+    constructor() { }
 
     getTotalThreads() {
         return this.statisticsRef.child('threads').once('value');
@@ -37,14 +31,12 @@ export class DataService {
         return this.threadsRef.once('value');
     }
 
-    submitThread(thread: IThread) {
+    submitThread(thread: IThread, priority: number) {
 
         var newThreadRef = this.threadsRef.push();
-        var newPriority = this.totalThreads + 1;
-        console.log(newPriority);
-        this.statisticsRef.child('threads').set(newPriority);
-        console.log(newPriority);
-        return newThreadRef.setWithPriority(thread, newPriority);
+        this.statisticsRef.child('threads').set(priority);
+        console.log(priority);
+        return newThreadRef.setWithPriority(thread, priority);
     }
 
     addThreadToFavorites(userKey: string, threadKey: string) {

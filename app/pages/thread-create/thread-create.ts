@@ -56,30 +56,34 @@ export class ThreadCreatePage implements OnInit {
       self.dataService.getUsername(uid).then(function (snapshot) {
         let username = snapshot.val();
 
-        let newThread: IThread = {
-          key: null,
-          title: thread.title,
-          question: thread.question,
-          category: thread.category,
-          user: { uid: uid, username: username },
-          dateCreated: new Date().toString(),
-          comments: null
-        };
+        self.dataService.getTotalThreads().then(function (snapshot) {
+          let currentNumber = snapshot.val();
+          let newPriority: number = currentNumber === null ? 0 : (currentNumber + 1);
 
-        self.dataService.submitThread(newThread)
-          .then(function (snapshot) {
+          let newThread: IThread = {
+            key: null,
+            title: thread.title,
+            question: thread.question,
+            category: thread.category,
+            user: { uid: uid, username: username },
+            dateCreated: new Date().toString(),
+            comments: null
+          };
 
-            loader.dismiss()
-              .then(() => {
-                self.viewCtrl.dismiss({
-                  thread: newThread
+          self.dataService.submitThread(newThread, newPriority)
+            .then(function (snapshot) {
+              loader.dismiss()
+                .then(() => {
+                  self.viewCtrl.dismiss({
+                    thread: newThread
+                  });
                 });
-              });
-          }, function (error) {
-            // The Promise was rejected.
-            console.error(error);
-            loader.dismiss();
-          });
+            }, function (error) {
+              // The Promise was rejected.
+              console.error(error);
+              loader.dismiss();
+            });
+        });
       });
 
 
