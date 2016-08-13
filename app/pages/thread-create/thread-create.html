@@ -19,7 +19,7 @@
         <div *ngIf="title.hasError('minlength') && title.touched" class="error-box">* Minimum password length is 8.</div>
         <ion-item [class.error]="!question.valid && question.touched">
             <ion-label floating>Question</ion-label>
-            <ion-textarea [formControl]="question" rows="10"></ion-textarea>
+            <ion-textarea [formControl]="question" rows="6"></ion-textarea>
         </ion-item>
         <div *ngIf="question.hasError('required') && question.touched" class="error-box">* Question is required.</div>
         <div *ngIf="question.hasError('minlength') && question.touched" class="error-box">* Type at least 100 characters.</div>
