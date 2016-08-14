@@ -14,8 +14,11 @@
 // Ionic's default Sass variable values. App Shared Sass imports belong
 // in the app.core.scss file and not this file. Sass variables specific
 // to the mode belong in either the app.ios.scss or app.md.scss files.
-
-
+$toolbar-background : #039be5;
+//$list-background-color : white;
+$card-ios-background-color: #f4f4f4;
+$card-md-background-color: #f4f4f4;
+$card-wp-background-color: #f4f4f4;
 // App Shared Color Variables
 // --------------------------------------------------
 // It's highly recommended to change the default colors

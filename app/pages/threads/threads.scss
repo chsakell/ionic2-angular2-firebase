@@ -22,3 +22,16 @@
    white-space: -o-pre-wrap;   /* Opera 7 */    
    word-wrap: break-word;      /* IE */
 }
+
+.segment-button.segment-activated {
+    color: black;
+    background-color: #f4f4f4;// #ffdd00;
+}
+
+.toolbar ion-searchbar .searchbar-input {
+  background-color: white;
+}
+
+.segment-button { 
+  color: black;
+}
