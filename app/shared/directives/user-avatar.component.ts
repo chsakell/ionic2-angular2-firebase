@@ -4,7 +4,7 @@ import { DataService } from '../services/data.service';
 
 @Component({
     selector: 'forum-user-avatar',
-    template: ` <img *ngIf="!imageLoaded" src="images/flickr.gif" style="margin:auto">
+    template: ` <img *ngIf="!imageLoaded" src="images/balls.gif" style="margin:auto">
                 <img *ngIf="imageLoaded" src="{{imageUrl}}">`
 })
 export class UserAvatarComponent implements OnInit {
