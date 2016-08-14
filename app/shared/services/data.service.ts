@@ -24,6 +24,10 @@ export class DataService {
         return this.threadsRef;
     }
 
+    getCommentsRef() {
+        return this.commentsRef;
+    }
+
     getStorageRef() {
         return this.storageRef.ref();
     }
@@ -74,9 +78,9 @@ export class DataService {
             });
     }
 
-    voteComment(commentKey: string, like: boolean, user: string) {
+    voteComment(commentKey: string, like: boolean, user: string): any {
         let commentRef = this.commentsRef.child(commentKey + '/votes/' + user);
-        commentRef.set(like);
+        return commentRef.set(like);
     }
 
     getUsername(userUid: string) {

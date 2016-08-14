@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActionSheetController, ModalController, ToastController, NavParams } from 'ionic-angular';
 
-import { UserAvatarComponent } from '../../shared/directives/user-avatar.component'; 
+import { UserAvatarComponent } from '../../shared/directives/user-avatar.component';
 import { CommentCreatePage } from '../comment-create/comment-create';
 import { IComment } from '../../shared/interfaces';
 import { AuthService } from '../../shared/services/auth.service';
 import { DataService } from '../../shared/services/data.service';
+import { ItemsService } from '../../shared/services/items.service';
 import { MappingsService } from '../../shared/services/mappings.service';
 
 import { TimeAgoPipe } from 'angular2-moment';
@@ -24,6 +25,7 @@ export class ThreadCommentsPage implements OnInit {
         private toastCtrl: ToastController,
         private navParams: NavParams,
         private authService: AuthService,
+        private itemsService: ItemsService,
         private dataService: DataService,
         private mappingsService: MappingsService) { }
 
@@ -31,7 +33,7 @@ export class ThreadCommentsPage implements OnInit {
         var self = this;
         self.threadKey = self.navParams.get('threadKey');
 
-        self.dataService.getThreadCommentsRef(self.threadKey).on('value', function (snapshot) {
+        self.dataService.getThreadCommentsRef(self.threadKey).once('value', function (snapshot) {
             self.comments = self.mappingsService.getComments(snapshot);
         });
     }
@@ -56,7 +58,17 @@ export class ThreadCommentsPage implements OnInit {
     }
 
     vote(like: boolean, comment: IComment) {
-        this.dataService.voteComment(comment.key, like, this.authService.getLoggedInUser().uid);
+        var self = this;
+
+        self.dataService.voteComment(comment.key, like, self.authService.getLoggedInUser().uid).then(function () {
+            self.dataService.getCommentsRef().child(comment.key).once('value').then(function (snapshot) {
+                comment = self.mappingsService.getComment(snapshot, comment.key);
+                console.log(comment);
+                self.itemsService.setItem<IComment>(self.comments, c => c.key === comment.key, comment);
+            });
+        });
+
+
     }
 
     showCommentActions() {

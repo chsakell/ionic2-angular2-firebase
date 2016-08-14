@@ -73,4 +73,25 @@ export class MappingsService {
         return comments;
     }
 
+    getComment(snapshot: any, commentKey: string): IComment {
+        let comment: IComment;
+
+        if (snapshot.val() == null)
+            return null;
+
+        let snapshotComment = snapshot.val();
+        console.log(snapshotComment);
+        comment = {
+            key: commentKey,
+            text: snapshotComment.text,
+            thread: snapshotComment.thread,
+            dateCreated: snapshotComment.dateCreated,
+            user: snapshotComment.user,
+            votesUp: this.itemsService.groupByBoolean(snapshotComment.votes, true),
+            votesDown: this.itemsService.groupByBoolean(snapshotComment.votes, false)
+        };
+
+        return comment;
+    }
+
 }

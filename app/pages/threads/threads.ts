@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, ModalController, ToastController  } from 'ionic-angular';
 
-import { UserAvatarComponent } from '../../shared/directives/user-avatar.component'; 
+import { UserAvatarComponent } from '../../shared/directives/user-avatar.component';
 import { IThread } from '../../shared/interfaces';
 import { ThreadCreatePage } from '../thread-create/thread-create';
 import { ThreadCommentsPage } from '../thread-comments/thread-comments';
@@ -89,13 +89,14 @@ export class ThreadsPage implements OnInit {
             self.threads.unshift(self.mappingsService.getThread(dataSnapshot.val(), key));
           });
       });
-      self.start -= (self.pageSize + 1);
     }
   }
 
   filterThreads(segment) {
     if (this.selectedSegment !== this.segment) {
       this.selectedSegment = this.segment;
+      if (this.selectedSegment === 'favorites')
+        this.queryText = '';
       console.log(this.segment);
       // Initialize
       this.loadThreads(true);
@@ -106,6 +107,7 @@ export class ThreadsPage implements OnInit {
     var self = this;
     console.log('searching..');
     if (self.queryText.trim().length !== 0) {
+      self.segment = 'all';
       console.log(self.queryText.length);
       // empty current threads
       self.threads = [];

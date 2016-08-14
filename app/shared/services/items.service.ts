@@ -53,7 +53,7 @@ export class ItemsService {
     }
 
     /*
-    Finds a specific item in an array using a predicate and repsaces it
+    Finds a specific item in an array using a predicate and replaces it
     */
     setItem<T>(array: Array<T>, predicate: Predicate<T>, item: T) {
         var _oldItem = _.find(array, predicate);
