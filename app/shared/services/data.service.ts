@@ -28,6 +28,10 @@ export class DataService {
         return this.commentsRef;
     }
 
+    getUsersRef() {
+        return this.usersRef;
+    }
+
     getStorageRef() {
         return this.storageRef.ref();
     }
@@ -56,9 +60,9 @@ export class DataService {
         return this.usersRef.child(user + '/favorites/').once('value');
     }
 
-    setUserImage(uid: string, imageUri: string) {
+    setUserImage(uid: string) {
         this.usersRef.child(uid).update({
-            image: imageUri
+            image: true
         });
     }
 

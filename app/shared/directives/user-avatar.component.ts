@@ -18,13 +18,20 @@ export class UserAvatarComponent implements OnInit {
         var self = this;
 
         console.log(this.uid);
-        self.getUserImage().then(function (url) {
-            self.imageUrl = url;
-            self.imageLoaded = true;
-        }).catch(function (error) {
-            console.log(error.code);
-            self.imageUrl = 'images/avatar.png';
-            self.imageLoaded = true;
+        self.dataService.getUsersRef().child(this.uid + '/image').once('value').then(function (snapshot) {
+            if (snapshot.val() === null) {
+                self.imageUrl = 'images/avatar.png';
+                self.imageLoaded = true;
+            } else {
+                self.getUserImage().then(function (url) {
+                    self.imageUrl = url;
+                    self.imageLoaded = true;
+                }).catch(function (error) {
+                    console.log(error.code);
+                    self.imageUrl = 'images/avatar.png';
+                    self.imageLoaded = true;
+                });
+            }
         });
     }
 
