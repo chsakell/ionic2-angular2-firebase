@@ -67,9 +67,9 @@ export class DataService {
     }
 
     submitComment(threadKey: string, comment: IComment) {
-        let commentRef = this.commentsRef.push();
-        let commentkey: string = commentRef.key;
-        commentRef.set(comment);
+        // let commentRef = this.commentsRef.push();
+        // let commentkey: string = commentRef.key;
+        this.commentsRef.child(comment.key).set(comment);
 
         return this.threadsRef.child(threadKey + '/comments').once('value')
             .then((snapshot) => {

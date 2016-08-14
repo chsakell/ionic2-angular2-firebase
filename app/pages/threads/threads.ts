@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NavController, ModalController, ToastController  } from 'ionic-angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NavController, ModalController, ToastController, Content } from 'ionic-angular';
 
 import { UserAvatarComponent } from '../../shared/directives/user-avatar.component';
 import { IThread } from '../../shared/interfaces';
@@ -16,6 +16,7 @@ import { ItemsService } from '../../shared/services/items.service';
   directives: [UserAvatarComponent]
 })
 export class ThreadsPage implements OnInit {
+  @ViewChild(Content) content: Content;
   segment: string = 'all';
   selectedSegment: string = this.segment;
   queryText: string = '';
@@ -100,6 +101,8 @@ export class ThreadsPage implements OnInit {
       console.log(this.segment);
       // Initialize
       this.loadThreads(true);
+    } else {
+      this.scrollToTop();
     }
   }
 
@@ -163,5 +166,9 @@ export class ThreadsPage implements OnInit {
     } else {
       infiniteScroll.complete();
     }
+  }
+
+  scrollToTop() {
+    this.content.scrollToTop();
   }
 }

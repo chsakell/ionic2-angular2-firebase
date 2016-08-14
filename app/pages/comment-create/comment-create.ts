@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Modal, NavController, ViewController, LoadingController, NavParams } from 'ionic-angular';
 import {FORM_DIRECTIVES, FormBuilder, FormGroup, Validators, AbstractControl} from '@angular/forms';
 
-import { IComment } from '../../shared/interfaces';
+import { IComment, IUser } from '../../shared/interfaces';
 import { AuthService } from '../../shared/services/auth.service';
 import { DataService } from '../../shared/services/data.service';
 
@@ -59,10 +59,17 @@ export class CommentCreatePage implements OnInit {
       self.dataService.getUsername(uid).then(function (snapshot) {
         let username = snapshot.val();
 
+
+
+        let commentRef = self.dataService.getCommentsRef().push();
+        let commentkey: string = commentRef.key;
+        let user: IUser = { uid: uid, username: username };
+
         let newComment: IComment = {
+          key: commentkey,
           text: commentForm.comment,
           thread: self.threadKey,
-          user: { uid: uid, username: username },
+          user: user,
           dateCreated: new Date().toString(),
           votesUp: null,
           votesDown: null
@@ -73,7 +80,8 @@ export class CommentCreatePage implements OnInit {
             loader.dismiss()
               .then(() => {
                 self.viewCtrl.dismiss({
-                  comment: newComment
+                  comment: newComment,
+                  user: user
                 });
               });
           }, function (error) {

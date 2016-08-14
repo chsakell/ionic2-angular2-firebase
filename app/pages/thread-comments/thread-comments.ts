@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ActionSheetController, ModalController, ToastController, NavParams } from 'ionic-angular';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActionSheetController, ModalController, ToastController, NavParams, Content } from 'ionic-angular';
 
 import { UserAvatarComponent } from '../../shared/directives/user-avatar.component';
 import { CommentCreatePage } from '../comment-create/comment-create';
@@ -17,6 +17,7 @@ import { TimeAgoPipe } from 'angular2-moment';
     directives: [UserAvatarComponent]
 })
 export class ThreadCommentsPage implements OnInit {
+    @ViewChild(Content) content: Content;
     threadKey: string;
     comments: IComment[];
 
@@ -39,22 +40,44 @@ export class ThreadCommentsPage implements OnInit {
     }
 
     createComment() {
+        let self = this;
+
         let modalPage = this.modalCtrl.create(CommentCreatePage, {
             threadKey: this.threadKey
         });
 
-        modalPage.onDidDismiss((data: any[]) => {
-            if (data) {
+        modalPage.onDidDismiss((commentData: any) => {
+            if (commentData) {
+                let commentVals = commentData.comment;
+                let commentUser = commentData.user;
+
+                let createdComment: IComment = {
+                    key: commentVals.key,
+                    thread: commentVals.thread,
+                    text: commentVals.text,
+                    user: commentUser,
+                    dateCreated: commentVals.dateCreated,
+                    votesUp: null,
+                    votesDown: null
+                };
+
+                self.comments.push(createdComment);
+                self.scrollToBottom();
+
                 let toast = this.toastCtrl.create({
                     message: 'Comment created',
-                    duration: 3000,
-                    position: 'bottom'
+                    duration: 2000,
+                    position: 'top'
                 });
                 toast.present();
             }
         });
 
         modalPage.present();
+    }
+
+    scrollToBottom() {
+        this.content.scrollToBottom();
     }
 
     vote(like: boolean, comment: IComment) {
