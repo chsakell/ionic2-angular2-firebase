@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController, ModalController, ToastController  } from 'ionic-angular';
 
+import { UserAvatarComponent } from '../../shared/directives/user-avatar.component'; 
 import { IThread } from '../../shared/interfaces';
 import { ThreadCreatePage } from '../thread-create/thread-create';
 import { ThreadCommentsPage } from '../thread-comments/thread-comments';
@@ -11,7 +12,8 @@ import { MappingsService } from '../../shared/services/mappings.service';
 import { ItemsService } from '../../shared/services/items.service';
 
 @Component({
-  templateUrl: 'build/pages/threads/threads.html'
+  templateUrl: 'build/pages/threads/threads.html',
+  directives: [UserAvatarComponent]
 })
 export class ThreadsPage implements OnInit {
   segment: string = 'all';

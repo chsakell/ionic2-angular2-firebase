@@ -2,19 +2,21 @@ import {Component, OnInit} from '@angular/core';
 import {NavController, LoadingController, ActionSheetController } from 'ionic-angular';
 import { Camera, CameraOptions } from 'ionic-native';
 
+import { UserAvatarComponent } from '../../shared/directives/user-avatar.component'; 
 import { AuthService } from '../../shared/services/auth.service';
 import { DataService } from '../../shared/services/data.service';
 
 declare var window: any;
 
 @Component({
-  templateUrl: 'build/pages/profile/profile.html'
+  templateUrl: 'build/pages/profile/profile.html',
+  directives: [UserAvatarComponent]
 })
 export class ProfilePage implements OnInit {
   userDataLoaded: boolean = false;
   username: string;
   userProfile = {};
-  firebaseAccount = {};
+  firebaseAccount: any = {};
   userStatistics: any = {};
 
   constructor(private navCtrl: NavController,
@@ -32,16 +34,29 @@ export class ProfilePage implements OnInit {
   loadUserProfile() {
     var self = this;
 
-    this.getUserData().then(function (snapshot) {
+    self.getUserData().then(function (snapshot) {
       let userData: any = snapshot.val();
-      self.userProfile = {
-        username: userData.username,
-        dateOfBirth: userData.dateOfBirth,
-        image: userData.hasOwnProperty('image') === true ? userData.image : 'images/avatar.png',
-        totalFavorites: userData.hasOwnProperty('favorites') === true ?
-          Object.keys(userData.favorites).length : 0
-      };
-      self.userDataLoaded = true;
+
+      self.getUserImage().then(function (url) {
+        self.userProfile = {
+          username: userData.username,
+          dateOfBirth: userData.dateOfBirth,
+          image: url,
+          totalFavorites: userData.hasOwnProperty('favorites') === true ?
+            Object.keys(userData.favorites).length : 0
+        };
+        self.userDataLoaded = true;
+      }).catch(function (error) {
+        console.log(error.code);
+        self.userProfile = {
+          username: userData.username,
+          dateOfBirth: userData.dateOfBirth,
+          image: 'images/avatar.png',
+          totalFavorites: userData.hasOwnProperty('favorites') === true ?
+            Object.keys(userData.favorites).length : 0
+        };
+        self.userDataLoaded = true;
+      });
     });
 
     self.getUserThreads();
@@ -53,6 +68,12 @@ export class ProfilePage implements OnInit {
 
     self.firebaseAccount = self.authService.getLoggedInUser();
     return self.dataService.getUser(self.authService.getLoggedInUser().uid);
+  }
+
+  getUserImage() {
+    var self = this;
+
+    return self.dataService.getStorageRef().child('images/' + self.firebaseAccount.uid + '/profile.png').getDownloadURL();
   }
 
   getFirebaseAccount() {
@@ -207,7 +228,8 @@ export class ProfilePage implements OnInit {
   }
 
   setUserProfileImage(imageUrl) {
-    this.dataService.setUserImage(this.authService.getLoggedInUser().uid, imageUrl);
-    this.loadUserProfile();
+    //this.dataService.setUserImage(this.authService.getLoggedInUser().uid, imageUrl);
+    //this.loadUserProfile();
+    //this.userProfile.image = imageUrl;
   }
 }
