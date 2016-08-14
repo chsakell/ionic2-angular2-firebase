@@ -1,8 +1,8 @@
 <ion-header>
     <ion-navbar>
-        <ion-title>{{userProfile.username}}</ion-title>
+        <ion-title>Profile</ion-title>
         <ion-buttons end>
-            <button (click)="openCamera()">
+            <button (click)="openImageOptions()">
             <ion-icon name="camera"></ion-icon>
       </button>
             <button (click)="reload()">
@@ -17,13 +17,12 @@
         <ion-list-header>
             Basic Info
         </ion-list-header>
-
         <ion-item>
-            <ion-icon name='mail' item-left></ion-icon>
-            Email
-            <ion-note item-right>
-                {{firebaseAccount.email}}
-            </ion-note>
+            <ion-thumbnail item-left>
+                <img src="{{userProfile.image}}">
+            </ion-thumbnail>
+            <h2>{{userProfile.username}}</h2>
+            <p>{{firebaseAccount.email}}</p>
         </ion-item>
 
         <ion-item>

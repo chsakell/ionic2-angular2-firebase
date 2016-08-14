@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {NavController, LoadingController} from 'ionic-angular';
+import {NavController, LoadingController, ActionSheetController } from 'ionic-angular';
 import { Camera, CameraOptions } from 'ionic-native';
 
 import { AuthService } from '../../shared/services/auth.service';
@@ -19,6 +19,7 @@ export class ProfilePage implements OnInit {
 
   constructor(private navCtrl: NavController,
     private loadingCtrl: LoadingController,
+    private actionSheeCtrl: ActionSheetController,
     private authService: AuthService,
     private dataService: DataService) {
 
@@ -36,6 +37,7 @@ export class ProfilePage implements OnInit {
       self.userProfile = {
         username: userData.username,
         dateOfBirth: userData.dateOfBirth,
+        image: userData.hasOwnProperty('image') === true ? userData.image : 'images/avatar.png',
         totalFavorites: userData.hasOwnProperty('favorites') === true ?
           Object.keys(userData.favorites).length : 0
       };
@@ -87,13 +89,39 @@ export class ProfilePage implements OnInit {
       });
   }
 
-  openCamera() {
+  openImageOptions() {
+    var self = this;
+
+    let actionSheet = self.actionSheeCtrl.create({
+      title: 'Upload new image from',
+      buttons: [
+        {
+          text: 'Camera',
+          icon: 'camera',
+          handler: () => {
+            self.openCamera(Camera.PictureSourceType.CAMERA);
+          }
+        },
+        {
+          text: 'Album',
+          icon: 'folder-open',
+          handler: () => {
+            self.openCamera(Camera.PictureSourceType.PHOTOLIBRARY);
+          }
+        }
+      ]
+    });
+
+    actionSheet.present();
+  }
+
+  openCamera(pictureSourceType: any) {
     var self = this;
 
     let options: CameraOptions = {
       quality: 95,
       destinationType: Camera.DestinationType.DATA_URL,
-      sourceType: Camera.PictureSourceType.CAMERA,
+      sourceType: pictureSourceType,
       allowEdit: true,
       encodingType: Camera.EncodingType.PNG,
       targetWidth: 100,
@@ -180,5 +208,6 @@ export class ProfilePage implements OnInit {
 
   setUserProfileImage(imageUrl) {
     this.dataService.setUserImage(this.authService.getLoggedInUser().uid, imageUrl);
+    this.loadUserProfile();
   }
 }
