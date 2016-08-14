@@ -20,7 +20,7 @@
         <ion-item>
             <ion-thumbnail item-left>
                 <!--<img src="{{userProfile.image}}">-->
-                <forum-user-avatar [uid]="firebaseAccount.uid"></forum-user-avatar>
+                <forum-user-avatar [uid]="firebaseAccount.uid" *ngIf="userDataLoaded"></forum-user-avatar>
             </ion-thumbnail>
             <h2>{{userProfile.username}}</h2>
             <p>{{firebaseAccount.email}}</p>

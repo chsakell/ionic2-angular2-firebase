@@ -33,7 +33,8 @@ export class ProfilePage implements OnInit {
 
   loadUserProfile() {
     var self = this;
-
+    self.userDataLoaded = false;
+    
     self.getUserData().then(function (snapshot) {
       let userData: any = snapshot.val();
 
@@ -222,14 +223,8 @@ export class ProfilePage implements OnInit {
         loader.dismiss().then(() => {
           // Upload completed successfully, now we can get the download URL
           var downloadURL = uploadTask.snapshot.downloadURL;
-          self.setUserProfileImage(downloadURL);
+          self.reload();
         });
       });
-  }
-
-  setUserProfileImage(imageUrl) {
-    //this.dataService.setUserImage(this.authService.getLoggedInUser().uid, imageUrl);
-    //this.loadUserProfile();
-    //this.userProfile.image = imageUrl;
   }
 }
