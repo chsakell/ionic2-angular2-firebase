@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActionSheetController, ModalController, ToastController, NavParams } from 'ionic-angular';
 
+import { UserAvatarComponent } from '../../shared/directives/user-avatar.component'; 
 import { CommentCreatePage } from '../comment-create/comment-create';
 import { IComment } from '../../shared/interfaces';
 import { AuthService } from '../../shared/services/auth.service';
@@ -11,7 +12,8 @@ import { TimeAgoPipe } from 'angular2-moment';
 
 @Component({
     templateUrl: 'build/pages/thread-comments/thread-comments.html',
-    pipes: [TimeAgoPipe]
+    pipes: [TimeAgoPipe],
+    directives: [UserAvatarComponent]
 })
 export class ThreadCommentsPage implements OnInit {
     threadKey: string;
