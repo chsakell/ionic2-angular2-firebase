@@ -202,7 +202,13 @@ export class ProfilePage implements OnInit {
     loader.present();
 
     // Upload file and metadata to the object 'images/mountains.jpg'
-    var uploadTask = self.dataService.getStorageRef().child('images/' + uid + '/profile.png').put(file);
+    var metadata = {
+      contentType: 'image/png',
+      name: 'profile.png',
+      cacheControl: 'no-cache',
+    };
+
+    var uploadTask = self.dataService.getStorageRef().child('images/' + uid + '/profile.png').put(file, metadata);
 
     // Listen for state changes, errors, and completion of the upload.
     uploadTask.on('state_changed',

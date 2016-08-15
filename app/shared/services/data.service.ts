@@ -12,9 +12,23 @@ export class DataService {
     threadsRef: any = firebase.database().ref('threads');
     commentsRef: any = firebase.database().ref('comments');
     statisticsRef: any = firebase.database().ref('statistics');
-    storageRef: any = firebase.storage();
+    storageRef: any = firebase.storage().ref();
 
-    constructor() { }
+    defaultImageUrl: string;
+
+    constructor() {
+        var self = this;
+        console.log('initializing..');
+        self.storageRef.child('images/default/profile.png').getDownloadURL().then(function (url) {
+            //console.log(url);
+            self.defaultImageUrl = url.split('?')[0] + '?alt=media';
+            //console.log(self.defaultImageUrl);
+        });
+    }
+
+    getDefaultImageUrl() {
+        return this.defaultImageUrl;
+    }
 
     getTotalThreads() {
         return this.statisticsRef.child('threads').once('value');
@@ -33,7 +47,7 @@ export class DataService {
     }
 
     getStorageRef() {
-        return this.storageRef.ref();
+        return this.storageRef;
     }
 
     getThreadCommentsRef(threadKey: string) {

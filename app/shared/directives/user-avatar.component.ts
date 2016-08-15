@@ -4,8 +4,7 @@ import { DataService } from '../services/data.service';
 
 @Component({
     selector: 'forum-user-avatar',
-    template: ` <img *ngIf="!imageLoaded" src="images/avatar.png">
-                <img *ngIf="imageLoaded" src="{{imageUrl}}">`
+    template: ` <img *ngIf="imageLoaded" src="{{imageUrl}}">`
 })
 export class UserAvatarComponent implements OnInit {
     @Input() uid: string;
@@ -17,7 +16,10 @@ export class UserAvatarComponent implements OnInit {
     ngOnInit() {
         var self = this;
 
-        console.log(this.uid);
+        let defaultUrl = self.dataService.getDefaultImageUrl();
+        this.imageUrl = defaultUrl.replace('default', self.uid);
+        self.imageLoaded = true;
+        /*
         self.dataService.getUsersRef().child(this.uid + '/image').once('value').then(function (snapshot) {
             if (snapshot.val() === null) {
                 self.imageUrl = 'images/avatar.png';
@@ -33,6 +35,7 @@ export class UserAvatarComponent implements OnInit {
                 });
             }
         });
+        */
     }
 
     getUserImage() {

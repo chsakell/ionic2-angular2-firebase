@@ -3,7 +3,7 @@ import {Platform, ionicBootstrap, Nav, MenuController} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 
 import { AuthService } from './shared/services/auth.service';
-
+import { DataService } from './shared/services/data.service';
 import {TabsPage} from './pages/tabs/tabs';
 import { LoginPage } from './pages/login/login';
 import { SignupPage } from './pages/signup/signup';
@@ -19,6 +19,7 @@ export class ForumApp implements OnInit {
   private loginPage: LoginPage;
 
   constructor(platform: Platform,
+    private dataService: DataService,
     private authService: AuthService,
     private menu: MenuController) {
     this.rootPage = TabsPage;
