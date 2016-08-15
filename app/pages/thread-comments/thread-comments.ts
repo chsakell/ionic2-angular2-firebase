@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ActionSheetController, ModalController, ToastController, NavParams, Content } from 'ionic-angular';
+import { ActionSheetController, ModalController, ToastController, LoadingController, NavParams, Content } from 'ionic-angular';
 
 import { UserAvatarComponent } from '../../shared/directives/user-avatar.component';
 import { CommentCreatePage } from '../comment-create/comment-create';
@@ -19,11 +19,13 @@ import { TimeAgoPipe } from 'angular2-moment';
 export class ThreadCommentsPage implements OnInit {
     @ViewChild(Content) content: Content;
     threadKey: string;
+    commentsLoaded: boolean = false;
     comments: IComment[];
 
     constructor(private actionSheeCtrl: ActionSheetController,
         private modalCtrl: ModalController,
         private toastCtrl: ToastController,
+        private loadingCtrl: LoadingController,
         private navParams: NavParams,
         private authService: AuthService,
         private itemsService: ItemsService,
@@ -33,9 +35,18 @@ export class ThreadCommentsPage implements OnInit {
     ngOnInit() {
         var self = this;
         self.threadKey = self.navParams.get('threadKey');
+        self.commentsLoaded = false;
+        let loader = this.loadingCtrl.create({
+            content: 'Loading thread comments..',
+        });
+        loader.present();
 
         self.dataService.getThreadCommentsRef(self.threadKey).once('value', function (snapshot) {
             self.comments = self.mappingsService.getComments(snapshot);
+            self.commentsLoaded = true;
+            loader.dismiss();
+        }, function (error) {
+            loader.dismiss();
         });
     }
 

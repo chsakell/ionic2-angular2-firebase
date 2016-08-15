@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content>
-    <ion-list>
+    <ion-list *ngIf="commentsLoaded">
         <ion-item *ngFor="let comment of comments" text-wrap>
             <ion-card>
 

@@ -14,3 +14,7 @@
   right: 0;
     bottom: 0;
 }
+
+ion-card .item + ion-card-content {
+    padding-top: 7px;
+}
