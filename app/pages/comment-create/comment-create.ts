@@ -28,7 +28,6 @@ export class CommentCreatePage implements OnInit {
   }
 
   ngOnInit() {
-    console.log('in comment create..');
     this.threadKey = this.navParams.get('threadKey');
     console.log(this.threadKey);
 
@@ -58,8 +57,6 @@ export class CommentCreatePage implements OnInit {
       let uid = self.authService.getLoggedInUser().uid;
       self.dataService.getUsername(uid).then(function (snapshot) {
         let username = snapshot.val();
-
-
 
         let commentRef = self.dataService.getCommentsRef().push();
         let commentkey: string = commentRef.key;

@@ -59,7 +59,7 @@ export class MappingsService {
             let comment: any = list[key];
             //console.log(comment.votes);
             this.itemsService.groupByBoolean(comment.votes, true);
-            console.log(comment.votes);
+
             comments.push({
                 key: key,
                 text: comment.text,

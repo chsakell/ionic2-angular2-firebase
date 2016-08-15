@@ -30,41 +30,7 @@
   </ion-refresher>
 
   <ion-list>
-    <ion-item *ngFor="let thread of threads" text-wrap>
-      <ion-card>
-
-        <ion-item>
-          <ion-avatar item-left>
-            <forum-user-avatar [uid]="thread.user.uid"></forum-user-avatar>
-          </ion-avatar>
-          <h2>{{thread.user.username}}</h2>
-          <p>{{thread.dateCreated | date:'medium'}}</p>
-        </ion-item>
-
-        <!--<img src="img/advance-card-bttf.png">-->
-        <div class="thread-card-title wordwrap">
-          {{thread.title}}
-        </div>
-        <div class="thread-card-question wordwrap">
-          {{thread.question}}
-        </div>
-
-        <ion-row>
-
-          <ion-col>
-            <button primary clear small (click)="viewComments(thread)">
-        <ion-icon name="quote"></ion-icon>
-        <div>{{thread.comments}} Comments</div>
-      </button>
-          </ion-col>
-          <ion-col center text-center>
-            <ion-note>
-              {{thread.category}}
-            </ion-note>
-          </ion-col>
-        </ion-row>
-      </ion-card>
-    </ion-item>
+    <forum-thread *ngFor="let thread of threads" [thread]="thread" (onViewComments)="viewComments($event)"></forum-thread>
   </ion-list>
 
   <ion-infinite-scroll (ionInfinite)="fetchNextThreads($event)" threshold="10px" *ngIf="(start > 0) && (queryText.trim().length == 0) && segment=='all'">

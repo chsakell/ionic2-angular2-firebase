@@ -18,11 +18,8 @@ export class DataService {
 
     constructor() {
         var self = this;
-        console.log('initializing..');
         self.storageRef.child('images/default/profile.png').getDownloadURL().then(function (url) {
-            //console.log(url);
             self.defaultImageUrl = url.split('?')[0] + '?alt=media';
-            //console.log(self.defaultImageUrl);
         });
     }
 

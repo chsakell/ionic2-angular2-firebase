@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavController, ModalController, ToastController, Content } from 'ionic-angular';
 
+import { ThreadComponent } from '../../shared/directives/thread.component';
 import { UserAvatarComponent } from '../../shared/directives/user-avatar.component';
 import { IThread } from '../../shared/interfaces';
 import { ThreadCreatePage } from '../thread-create/thread-create';
@@ -13,7 +14,7 @@ import { ItemsService } from '../../shared/services/items.service';
 
 @Component({
   templateUrl: 'build/pages/threads/threads.html',
-  directives: [UserAvatarComponent]
+  directives: [UserAvatarComponent, ThreadComponent]
 })
 export class ThreadsPage implements OnInit {
   @ViewChild(Content) content: Content;
@@ -144,9 +145,17 @@ export class ThreadsPage implements OnInit {
     modalPage.present();
   }
 
+  /*
   viewComments(thread: IThread) {
     this.navCtrl.push(ThreadCommentsPage, {
       threadKey: thread.key
+    });
+  }
+  */
+
+  viewComments(key: string) {
+    this.navCtrl.push(ThreadCommentsPage, {
+      threadKey: key
     });
   }
 
