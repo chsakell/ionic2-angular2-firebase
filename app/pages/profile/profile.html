@@ -1,5 +1,8 @@
 <ion-header>
     <ion-navbar>
+    <button menuToggle>
+        <ion-icon name='menu'></ion-icon>
+    </button>
         <ion-title>Profile</ion-title>
         <ion-buttons end>
             <button (click)="openImageOptions()">
@@ -53,18 +56,18 @@
         <ion-item>
             # Threads
             <ion-icon name='text' item-left></ion-icon>
-            <ion-note item-right>{{userStatistics.totalThreads}}</ion-note>
+            <ion-badge item-right>{{userStatistics.totalThreads}}</ion-badge>
         </ion-item>
 
         <ion-item>
             # Comments
             <ion-icon name='quote' item-left></ion-icon>
-            <ion-note item-right>{{userStatistics.totalComments}}</ion-note>
+            <ion-badge item-right>{{userStatistics.totalComments}}</ion-badge>
         </ion-item>
         <ion-item>
             # Favorites
             <ion-icon name='heart' item-left></ion-icon>
-            <ion-note item-right>{{userProfile.totalFavorites}}</ion-note>
+            <ion-badge item-right>{{userProfile.totalFavorites}}</ion-badge>
         </ion-item>
 
     </ion-list>

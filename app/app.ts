@@ -1,5 +1,5 @@
 import {Component, ViewChild, OnInit } from '@angular/core';
-import {Platform, ionicBootstrap, Nav, MenuController} from 'ionic-angular';
+import {Platform, ionicBootstrap, Nav, MenuController, ViewController } from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 
 import { AuthService } from './shared/services/auth.service';
@@ -39,19 +39,23 @@ export class ForumApp implements OnInit {
         self.menu.close();
         self.nav.push(LoginPage);
       } else {
-
       }
     });
   }
 
   openPage(page) {
+    let viewCtrl: ViewController = this.nav.getActive();
+    // console.log(viewCtrl);
     // close the menu when clicking a link from the menu
     this.menu.close();
 
     if (page === 'login') {
-      this.nav.push(LoginPage);
-    } else if (page === 'signup')
-      this.nav.push(SignupPage);
+      if (!(viewCtrl.instance instanceof LoginPage))
+        this.nav.pop();//push(LoginPage);
+    } else if (page === 'signup') {
+      if (!(viewCtrl.instance instanceof SignupPage))
+        this.nav.push(SignupPage);
+    }
   }
 
   signout() {
