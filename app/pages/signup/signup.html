@@ -14,7 +14,7 @@
                 <ion-input type="text" value="" [formControl]="email"></ion-input>
             </ion-item>
             <div *ngIf="email.hasError('required') && email.touched" class="error-box">* Email is required.</div>
-            <div *ngIf="email.hasError('pattern') && email.touched" class="error-box">* Enter a valid email address.</div>
+            <div *ngIf="email.hasError('isValid') && email.touched" class="error-box">* Enter a valid email address.</div>
             <ion-item [class.error]="!password.valid && password.touched">
                 <ion-label floating>Password</ion-label>
                 <ion-input type="password" value="" [formControl]="password"></ion-input>

@@ -6,6 +6,7 @@ import { IThread, UserCredentials } from '../../shared/interfaces';
 import { DataService } from '../../shared/services/data.service';
 import { AuthService } from '../../shared/services/auth.service';
 import { CheckedValidator } from '../../shared/validators/checked.validator';
+import { EmailValidator } from '../../shared/validators/email.validator';
 
 @Component({
     templateUrl: 'build/pages/signup/signup.html',
@@ -31,7 +32,7 @@ export class SignupPage implements OnInit {
     ngOnInit() {
         this.createFirebaseAccountForm = this.fb.group({
             'username': ['', Validators.compose([Validators.required, Validators.minLength(8)])],
-            'email': ['', Validators.compose([Validators.required])],
+            'email': ['', Validators.compose([Validators.required, EmailValidator.isValid])],
             'password': ['', Validators.compose([Validators.required, Validators.minLength(5)])],
             'dateOfBirth': [new Date().toISOString().slice(0, 10), Validators.compose([Validators.required])],
             'terms': [false, CheckedValidator.isChecked]
