@@ -85,13 +85,6 @@ export class ThreadCreatePage implements OnInit {
             });
         });
       });
-
-
-
-
-
-
-
     }
   }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NavController, ModalController, ToastController, Content } from 'ionic-angular';
+import { NavController, ModalController, ToastController, Content, Events } from 'ionic-angular';
 
 import { ThreadComponent } from '../../shared/directives/thread.component';
 import { UserAvatarComponent } from '../../shared/directives/user-avatar.component';
@@ -25,6 +25,7 @@ export class ThreadsPage implements OnInit {
   private pageSize: number = 3;
 
   public threads: Array<IThread> = [];
+  public newThreads: Array<IThread> = [];
   public favoriteThreadKeys: string[];
 
   constructor(private navCtrl: NavController,
@@ -33,10 +34,12 @@ export class ThreadsPage implements OnInit {
     private authService: AuthService,
     private dataService: DataService,
     private mappingsService: MappingsService,
-    private itemsService: ItemsService) { }
+    private itemsService: ItemsService,
+    private events: Events) { }
 
   ngOnInit() {
     var self = this;
+    console.log('on nginit');
 
     if (self.authService.getLoggedInUser() === null) {
       //
@@ -44,6 +47,33 @@ export class ThreadsPage implements OnInit {
       self.loadThreads(true);
     }
 
+    self.dataService.getStatisticsRef().on('child_changed', self.onThreadAdded);
+  }
+
+  // Notice function declarion to keep the right this reference
+  public onThreadAdded = (childSnapshot, prevChildKey) => {
+    let priority = childSnapshot.val(); // priority..
+    var self = this;
+    console.log(priority);
+    self.events.publish('thread:created');
+    // fetch new thread..
+    self.dataService.getThreadsRef().orderByPriority().equalTo(priority).once('value').then(function (dataSnapshot) {
+      let key = Object.keys(dataSnapshot.val())[0];
+      let newThread: IThread = self.mappingsService.getThread(dataSnapshot.val()[key], key);
+      self.newThreads.push(newThread);
+    });
+  }
+
+  addNewThreads() {
+    var self = this;
+    console.log(self.newThreads);
+    self.newThreads.forEach(function (thread: IThread) {
+      self.threads.unshift(thread);
+    });
+
+    self.newThreads = [];
+    console.log(self.newThreads.length);
+    self.events.publish('threads:viewed');
   }
 
   loadThreads(fromStart: boolean) {
@@ -51,6 +81,7 @@ export class ThreadsPage implements OnInit {
 
     if (fromStart) {
       self.threads = [];
+      self.newThreads = [];
 
       if (self.segment === 'all') {
         return this.dataService.getTotalThreads().then(function (snapshot) {
@@ -92,6 +123,7 @@ export class ThreadsPage implements OnInit {
           });
       });
     }
+    self.events.publish('threads:viewed');
   }
 
   filterThreads(segment) {
@@ -128,6 +160,7 @@ export class ThreadsPage implements OnInit {
   }
 
   createThread() {
+    var self = this;
     let modalPage = this.modalCtrl.create(ThreadCreatePage);
 
     modalPage.onDidDismiss((data: any[]) => {
@@ -138,7 +171,8 @@ export class ThreadsPage implements OnInit {
           position: 'bottom'
         });
         toast.present();
-        this.loadThreads(true);
+        //this.loadThreads(true);
+        self.addNewThreads();
       }
     });
 

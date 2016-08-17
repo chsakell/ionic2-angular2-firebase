@@ -39,6 +39,10 @@ export class DataService {
         return this.commentsRef;
     }
 
+    getStatisticsRef() {
+        return this.statisticsRef;
+    }
+
     getUsersRef() {
         return this.usersRef;
     }
