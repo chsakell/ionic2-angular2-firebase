@@ -17,6 +17,7 @@ export class TabsPage implements OnInit {
     private aboutPage: any;
 
     private newThreads: string = '';
+    private selectedTab: number = -1;
 
     constructor(private navCtrl: NavController,
         private authService: AuthService,
@@ -44,16 +45,10 @@ export class TabsPage implements OnInit {
         });
     }
 
-    setSelectedTab() {
-        var self = this;
-        console.log(self.tabRef.getSelected().tabTitle + ' ionChange');
-    }
-
     clicked() {
-        var self = this;
-        let title = self.tabRef.getSelected().tabTitle;
-        console.log(title  + ' clicked');
-        if (title === 'Threads' && self.newThreads !== '') {
+        var self = this;      
+
+        if (self.newThreads !== '') {
             self.events.publish('threads:add');
             self.newThreads = '';
         }
