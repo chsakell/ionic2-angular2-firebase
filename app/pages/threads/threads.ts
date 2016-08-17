@@ -39,7 +39,6 @@ export class ThreadsPage implements OnInit {
 
   ngOnInit() {
     var self = this;
-    console.log('on nginit');
 
     if (self.authService.getLoggedInUser() === null) {
       //
@@ -48,6 +47,7 @@ export class ThreadsPage implements OnInit {
     }
 
     self.dataService.getStatisticsRef().on('child_changed', self.onThreadAdded);
+    self.events.subscribe('threads:add', self.addNewThreads);
   }
 
   // Notice function declarion to keep the right this reference
@@ -64,7 +64,7 @@ export class ThreadsPage implements OnInit {
     });
   }
 
-  addNewThreads() {
+  public addNewThreads = () => {
     var self = this;
     console.log(self.newThreads);
     self.newThreads.forEach(function (thread: IThread) {
@@ -72,8 +72,8 @@ export class ThreadsPage implements OnInit {
     });
 
     self.newThreads = [];
+    self.scrollToTop();
     console.log(self.newThreads.length);
-    self.events.publish('threads:viewed');
   }
 
   loadThreads(fromStart: boolean) {
@@ -107,9 +107,11 @@ export class ThreadsPage implements OnInit {
 
   getThreads() {
     var self = this;
-
+    let startFrom: number = self.start - self.pageSize;
+    if (startFrom < 0)
+      startFrom = 0;
     if (self.segment === 'all') {
-      return this.dataService.getThreadsRef().orderByPriority().startAt(self.start - self.pageSize).endAt(self.start).once('value', function (snapshot) {
+      return this.dataService.getThreadsRef().orderByPriority().startAt(startFrom).endAt(self.start).once('value', function (snapshot) {
         self.itemsService.reversedItems<IThread>(self.mappingsService.getThreads(snapshot)).forEach(function (thread) {
           self.threads.push(thread);
         });

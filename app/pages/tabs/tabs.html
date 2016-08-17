@@ -1,4 +1,4 @@
-<ion-tabs #forumTabs [selectedIndex]="0">
+<ion-tabs #forumTabs [selectedIndex]="0" (click)="clicked()">
     <ion-tab tabIcon="chatboxes" #content tabTitle="Threads" [root]="threadsPage" tabBadge="{{newThreads}}" tabBadgeStyle="danger"></ion-tab>
     <ion-tab tabIcon="person" #content tabTitle="Profile" [root]="profilePage"></ion-tab>
     <ion-tab tabIcon="information-circle" #content tabTitle="About" [root]="aboutPage"></ion-tab>

@@ -1,5 +1,5 @@
-import {Component, OnInit } from '@angular/core';
-import { NavController, Events } from 'ionic-angular';
+import {Component, OnInit, ViewChild } from '@angular/core';
+import { NavController, Events, Tabs } from 'ionic-angular';
 
 import {ThreadsPage} from '../threads/threads';
 import {ProfilePage} from '../profile/profile';
@@ -10,6 +10,7 @@ import { AuthService } from '../../shared/services/auth.service';
     templateUrl: 'build/pages/tabs/tabs.html'
 })
 export class TabsPage implements OnInit {
+    @ViewChild('forumTabs') tabRef: Tabs;
 
     private threadsPage: any;
     private profilePage: any;
@@ -35,16 +36,26 @@ export class TabsPage implements OnInit {
         var self = this;
 
         self.events.subscribe('thread:created', (threadData) => {
-            if (self.newThreads === '')
+            if (self.newThreads === '') {
                 self.newThreads = '1';
-            else {
+            } else {
                 self.newThreads = (+self.newThreads + 1).toString();
             }
         });
-
-        self.events.subscribe('threads:viewed', (threadData) => {
-            self.newThreads = '';
-        });
     }
 
+    setSelectedTab() {
+        var self = this;
+        console.log(self.tabRef.getSelected().tabTitle + ' ionChange');
+    }
+
+    clicked() {
+        var self = this;
+        let title = self.tabRef.getSelected().tabTitle;
+        console.log(title  + ' clicked');
+        if (title === 'Threads' && self.newThreads !== '') {
+            self.events.publish('threads:add');
+            self.newThreads = '';
+        }
+    }
 }
