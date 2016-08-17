@@ -43,6 +43,10 @@ export class TabsPage implements OnInit {
                 self.newThreads = (+self.newThreads + 1).toString();
             }
         });
+
+        self.events.subscribe('threads:viewed', (threadData) => {
+            self.newThreads = '';
+        });
     }
 
     clicked() {

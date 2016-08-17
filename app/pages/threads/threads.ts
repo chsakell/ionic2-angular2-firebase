@@ -74,6 +74,7 @@ export class ThreadsPage implements OnInit {
     self.newThreads = [];
     self.scrollToTop();
     console.log(self.newThreads.length);
+    self.events.publish('threads:viewed');
   }
 
   loadThreads(fromStart: boolean) {
