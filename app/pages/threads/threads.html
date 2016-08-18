@@ -3,7 +3,7 @@
     <button menuToggle>
       <ion-icon name='menu'></ion-icon>
     </button>
-    <ion-segment [(ngModel)]="segment" (ionChange)="filterThreads()">
+    <ion-segment [(ngModel)]="segment" (ionChange)="filterThreads(segment)">
       <ion-segment-button value="all">
         All
       </ion-segment-button>
@@ -31,7 +31,11 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-list>
+  <div *ngIf="loading">
+    <img src="images/ring.gif" style="display:block; margin:auto" />
+  </div>
+
+  <ion-list *ngIf="!loading">
     <forum-thread *ngFor="let thread of threads" [thread]="thread" (onViewComments)="viewComments($event)"></forum-thread>
   </ion-list>
 

@@ -23,6 +23,7 @@ export class ThreadsPage implements OnInit {
   queryText: string = '';
   private start: number;
   private pageSize: number = 3;
+  private loading: boolean = true;
 
   public threads: Array<IThread> = [];
   public newThreads: Array<IThread> = [];
@@ -39,11 +40,13 @@ export class ThreadsPage implements OnInit {
 
   ngOnInit() {
     var self = this;
-
+    self.segment = 'all';
     if (self.authService.getLoggedInUser() === null) {
       //
     } else {
-      self.loadThreads(true);
+      self.loadThreads(true).then(() => {
+        self.loading = false;
+      });
     }
 
     self.dataService.getStatisticsRef().on('child_changed', self.onThreadAdded);
@@ -81,6 +84,7 @@ export class ThreadsPage implements OnInit {
     var self = this;
 
     if (fromStart) {
+      self.loading = true;
       self.threads = [];
       self.newThreads = [];
 
@@ -117,6 +121,7 @@ export class ThreadsPage implements OnInit {
           self.threads.push(thread);
         });
         self.start -= (self.pageSize + 1);
+        self.loading = false;
       });
     } else {
       self.favoriteThreadKeys.forEach(key => {
@@ -127,9 +132,11 @@ export class ThreadsPage implements OnInit {
       });
     }
     self.events.publish('threads:viewed');
+    self.loading = false;
   }
 
   filterThreads(segment) {
+    console.log(segment);
     if (this.selectedSegment !== this.segment) {
       this.selectedSegment = this.segment;
       if (this.selectedSegment === 'favorites')
