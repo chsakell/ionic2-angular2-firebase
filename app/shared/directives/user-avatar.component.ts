@@ -18,7 +18,6 @@ export class UserAvatarComponent implements OnInit {
 
         let defaultUrl = self.dataService.getDefaultImageUrl();
         if (defaultUrl !== null) {
-            console.log('found..');
             this.imageUrl = defaultUrl.replace('default', self.uid);
             self.imageLoaded = true;
         } else {
