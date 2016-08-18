@@ -36,18 +36,11 @@ export class ThreadCommentsPage implements OnInit {
         var self = this;
         self.threadKey = self.navParams.get('threadKey');
         self.commentsLoaded = false;
-        let loader = this.loadingCtrl.create({
-            content: 'Loading thread comments..',
-        });
-        loader.present();
 
         self.dataService.getThreadCommentsRef(self.threadKey).once('value', function (snapshot) {
             self.comments = self.mappingsService.getComments(snapshot);
             self.commentsLoaded = true;
-            loader.dismiss();
-        }, function (error) {
-            loader.dismiss();
-        });
+        }, function (error) {});
     }
 
     createComment() {

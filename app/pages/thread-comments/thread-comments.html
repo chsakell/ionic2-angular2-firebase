@@ -10,6 +10,9 @@
 </ion-header>
 
 <ion-content>
+    <div *ngIf="!commentsLoaded">
+        <img src="images/ring.gif" style="display:block; margin:auto" />
+    </div>
     <ion-list *ngIf="commentsLoaded">
         <ion-item *ngFor="let comment of comments" text-wrap>
             <ion-card>
