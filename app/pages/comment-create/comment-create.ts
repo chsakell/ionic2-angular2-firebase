@@ -29,7 +29,6 @@ export class CommentCreatePage implements OnInit {
 
   ngOnInit() {
     this.threadKey = this.navParams.get('threadKey');
-    console.log(this.threadKey);
 
     this.createCommentForm = this.fb.group({
       'comment': ['', Validators.compose([Validators.required, Validators.minLength(10)])]

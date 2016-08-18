@@ -79,8 +79,6 @@ export class ProfilePage implements OnInit {
 
   getFirebaseAccount() {
     var self = this;
-
-    console.log(self.firebaseAccount);
   }
 
   getUserThreads() {

@@ -90,12 +90,9 @@ export class ThreadCommentsPage implements OnInit {
         self.dataService.voteComment(comment.key, like, self.authService.getLoggedInUser().uid).then(function () {
             self.dataService.getCommentsRef().child(comment.key).once('value').then(function (snapshot) {
                 comment = self.mappingsService.getComment(snapshot, comment.key);
-                console.log(comment);
                 self.itemsService.setItem<IComment>(self.comments, c => c.key === comment.key, comment);
             });
         });
-
-
     }
 
     showCommentActions() {
@@ -114,9 +111,7 @@ export class ThreadCommentsPage implements OnInit {
                     text: 'Cancel',
                     icon: 'close-circle',
                     role: 'cancel',
-                    handler: () => {
-                        console.log('Cancel clicked');
-                    }
+                    handler: () => { }
                 }
             ]
         });

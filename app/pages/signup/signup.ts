@@ -51,7 +51,6 @@ export class SignupPage implements OnInit {
         let dd = now.getDate();
 
         let formattedDate = [now.getFullYear(), !mm[1] && '0', mm, !dd[1] && '0', dd].join('-');
-        console.log(formattedDate);
         return formattedDate;
     }
 
@@ -72,10 +71,8 @@ export class SignupPage implements OnInit {
 
             loader.present();
 
-            console.log(newUser);
             this.authService.registerUser(newUser)
                 .then(function (result) {
-                    console.log(self.authService.getLoggedInUser());
                     self.authService.addUser(signupForm.username, signupForm.dateOfBirth, self.authService.getLoggedInUser().uid);
                     loader.dismiss()
                         .then(() => {

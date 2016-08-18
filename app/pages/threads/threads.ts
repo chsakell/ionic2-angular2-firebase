@@ -57,7 +57,6 @@ export class ThreadsPage implements OnInit {
   public onThreadAdded = (childSnapshot, prevChildKey) => {
     let priority = childSnapshot.val(); // priority..
     var self = this;
-    console.log(priority);
     self.events.publish('thread:created');
     // fetch new thread..
     self.dataService.getThreadsRef().orderByPriority().equalTo(priority).once('value').then(function (dataSnapshot) {
@@ -69,14 +68,12 @@ export class ThreadsPage implements OnInit {
 
   public addNewThreads = () => {
     var self = this;
-    console.log(self.newThreads);
     self.newThreads.forEach(function (thread: IThread) {
       self.threads.unshift(thread);
     });
 
     self.newThreads = [];
     self.scrollToTop();
-    console.log(self.newThreads.length);
     self.events.publish('threads:viewed');
   }
 
@@ -136,12 +133,10 @@ export class ThreadsPage implements OnInit {
   }
 
   filterThreads(segment) {
-    console.log(segment);
     if (this.selectedSegment !== this.segment) {
       this.selectedSegment = this.segment;
       if (this.selectedSegment === 'favorites')
         this.queryText = '';
-      console.log(this.segment);
       // Initialize
       this.loadThreads(true);
     } else {
@@ -151,14 +146,11 @@ export class ThreadsPage implements OnInit {
 
   searchThreads() {
     var self = this;
-    console.log('searching..');
     if (self.queryText.trim().length !== 0) {
       self.segment = 'all';
-      console.log(self.queryText.length);
       // empty current threads
       self.threads = [];
       self.dataService.loadThreads().then(function (snapshot) {
-        console.log(snapshot.val());
         self.itemsService.reversedItems<IThread>(self.mappingsService.getThreads(snapshot)).forEach(function (thread) {
           if (thread.title.toLowerCase().includes(self.queryText.toLowerCase()))
             self.threads.push(thread);
@@ -211,7 +203,6 @@ export class ThreadsPage implements OnInit {
   }
 
   fetchNextThreads(infiniteScroll) {
-    console.log(this.start);
     if (this.start > 0) {
       this.loadThreads(false).then(() => {
         infiniteScroll.complete();

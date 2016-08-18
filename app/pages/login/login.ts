@@ -54,13 +54,11 @@ export class LoginPage implements OnInit {
             console.log(user);
             this.authService.signInUser(user.email, user.password)
                 .then(function (result) {
-                    console.log(self.authService.getLoggedInUser());
                     self.nav.setRoot(TabsPage);
                 }).catch(function (error) {
                     // Handle Errors here.
                     var errorCode = error.code;
                     var errorMessage = error.message;
-                    console.error(error);
                     loader.dismiss().then(() => {
                         let toast = self.toastCtrl.create({
                             message: errorMessage,
