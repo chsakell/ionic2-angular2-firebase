@@ -1,6 +1,6 @@
 <ion-header>
     <ion-navbar>
-    <button menuToggle>
+        <button menuToggle>
         <ion-icon name='menu'></ion-icon>
     </button>
         <ion-title>Profile</ion-title>
@@ -15,6 +15,10 @@
     </ion-navbar>
 </ion-header>
 <ion-content>
+    <div *ngIf="!userDataLoaded">
+        <img src="images/ring.gif" style="display:block; margin:auto" />
+    </div>
+
     <ion-list no-border *ngIf="userDataLoaded">
 
         <ion-list-header>

@@ -34,10 +34,6 @@ export class ProfilePage implements OnInit {
   loadUserProfile() {
     var self = this;
     self.userDataLoaded = false;
-    let loader = this.loadingCtrl.create({
-      content: 'Loading user profile..',
-    });
-    loader.present();
     
     self.getUserData().then(function (snapshot) {
       let userData: any = snapshot.val();
@@ -51,7 +47,6 @@ export class ProfilePage implements OnInit {
             Object.keys(userData.favorites).length : 0
         };
         self.userDataLoaded = true;
-        loader.dismiss();
       }).catch(function (error) {
         console.log(error.code);
         self.userProfile = {
@@ -62,7 +57,6 @@ export class ProfilePage implements OnInit {
             Object.keys(userData.favorites).length : 0
         };
         self.userDataLoaded = true;
-        loader.dismiss();
       });
     });
 
