@@ -17,8 +17,18 @@ export class UserAvatarComponent implements OnInit {
         var self = this;
 
         let defaultUrl = self.dataService.getDefaultImageUrl();
-        this.imageUrl = defaultUrl.replace('default', self.uid);
-        self.imageLoaded = true;
+        if (defaultUrl !== null) {
+            console.log('found..');
+            this.imageUrl = defaultUrl.replace('default', self.uid);
+            self.imageLoaded = true;
+        } else {
+            console.log('get from firebae');
+            self.dataService.getStorageRef().child('images/' + self.uid + '/profile.png').getDownloadURL().then(function (url) {
+                let defaultImageUrl = url.split('?')[0] + '?alt=media';
+                this.imageUrl = defaultUrl.replace('default', self.uid);
+                self.imageLoaded = true;
+            });
+        }
         /*
         self.dataService.getUsersRef().child(this.uid + '/image').once('value').then(function (snapshot) {
             if (snapshot.val() === null) {
