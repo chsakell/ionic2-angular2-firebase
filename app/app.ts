@@ -37,7 +37,7 @@ export class ForumApp implements OnInit {
     this.authService.onAuthStateChanged(function (user) {
       if (user === null) {
         self.menu.close();
-        self.nav.push(LoginPage);
+        self.nav.setRoot(LoginPage);
       } else {
       }
     });

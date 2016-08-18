@@ -8,11 +8,6 @@
                 Account
             </ion-list-header>
 
-            <ion-item (click)="openPage('login')" *ngIf="!isUserLoggedIn()">
-                <ion-icon name='log-in' item-left></ion-icon>
-                Login
-                <ion-icon name='arrow-dropright' item-right secondary></ion-icon>
-            </ion-item>
             <ion-item (click)="openPage('signup')" *ngIf="!isUserLoggedIn()">
                 <ion-icon name='person-add' item-left></ion-icon>
                 Register
