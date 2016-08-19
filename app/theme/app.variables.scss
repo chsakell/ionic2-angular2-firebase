@@ -14,12 +14,23 @@
 // Ionic's default Sass variable values. App Shared Sass imports belong
 // in the app.core.scss file and not this file. Sass variables specific
 // to the mode belong in either the app.ios.scss or app.md.scss files.
-$toolbar-background : #039be5;
+$toolbar-background : #2c7aa0;
 //$list-background-color : white;
 $card-ios-background-color: #f4f4f4;
 $card-md-background-color: #f4f4f4;
 $card-wp-background-color: #f4f4f4;
 scroll-content { background-color: whitesmoke;}
+ion-list .item .item-inner {
+    background: whitesmoke;
+}
+.item {
+    background-color: whitesmoke !important;
+}
+
+ion-card {
+    background: white !important;
+}
+
 // App Shared Color Variables
 // --------------------------------------------------
 // It's highly recommended to change the default colors
@@ -30,7 +41,7 @@ scroll-content { background-color: whitesmoke;}
 // are different per mode.
 
 $colors: (
-  primary:    #387ef5,
+  primary:    #2c7aa0,
   secondary:  #32db64,
   danger:     #f53d3d,
   light:      #f4f4f4,
