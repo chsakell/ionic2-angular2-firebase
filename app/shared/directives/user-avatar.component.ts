@@ -23,8 +23,7 @@ export class UserAvatarComponent implements OnInit {
         } else {
             console.log('get from firebae');
             self.dataService.getStorageRef().child('images/' + self.uid + '/profile.png').getDownloadURL().then(function (url) {
-                let defaultImageUrl = url.split('?')[0] + '?alt=media' + '&t=' + (new Date().getTime());
-                this.imageUrl = defaultUrl.replace('default', self.uid);
+                self.imageUrl = url.split('?')[0] + '?alt=media' + '&t=' + (new Date().getTime());
                 self.imageLoaded = true;
             });
         }
