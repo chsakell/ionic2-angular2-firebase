@@ -42,6 +42,8 @@ export class ThreadsPage implements OnInit {
   ngOnInit() {
     var self = this;
     self.segment = 'all';
+    self.events.subscribe('network:connected', self.networkConnected);
+
     setTimeout(function () {
       var connectedRef = self.dataService.getConnectionRef();
       connectedRef.on('value', function (snap) {
@@ -59,7 +61,6 @@ export class ThreadsPage implements OnInit {
 
           self.dataService.getStatisticsRef().on('child_changed', self.onThreadAdded);
           self.events.subscribe('threads:add', self.addNewThreads);
-          self.events.subscribe('network:connected', self.networkConnected);
         } else {
           console.log('No we are not');
           self.connected = false;
@@ -67,7 +68,7 @@ export class ThreadsPage implements OnInit {
           // todo load from SQLite
         }
       });
-    }, 1500);
+    }, 3000);
   }
 
   public networkConnected = (connection) => {
@@ -229,13 +230,18 @@ export class ThreadsPage implements OnInit {
 
   reloadThreads(refresher) {
     this.queryText = '';
-    this.loadThreads(true).then(() => {
+    if (this.connected) {
+      this.loadThreads(true).then(() => {
+        refresher.complete();
+      });
+    } else {
+      // TODO SQLitie
       refresher.complete();
-    });
+    }
   }
 
   fetchNextThreads(infiniteScroll) {
-    if (this.start > 0) {
+    if (this.start > 0 && this.connected) {
       this.loadThreads(false).then(() => {
         infiniteScroll.complete();
       });

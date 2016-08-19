@@ -30,7 +30,7 @@
 
 <ion-content>
 
-  <ion-refresher (ionRefresh)="reloadThreads($event)" *ngIf="segment=='all' && connected">
+  <ion-refresher (ionRefresh)="reloadThreads($event)" *ngIf="segment=='all'">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 

@@ -1,7 +1,6 @@
 import {Component, ViewChild, OnInit } from '@angular/core';
 import {Platform, ionicBootstrap, Nav, MenuController, ViewController, Events } from 'ionic-angular';
-import {StatusBar} from 'ionic-native';
-import { Network } from 'ionic-native';
+import { Network, Splashscreen, StatusBar } from 'ionic-native';
 import { Subscription } from '../node_modules/rxjs/Subscription';
 
 import { AuthService } from './shared/services/auth.service';
@@ -36,6 +35,8 @@ export class ForumApp implements OnInit {
       StatusBar.styleDefault();
       self.watchForConnection();
       self.watchForDisconnect();
+      Splashscreen.hide();
+      // self.hideSplashScreen();
     });
   }
 
@@ -65,6 +66,14 @@ export class ForumApp implements OnInit {
       self.dataService.goOffline();
       self.events.publish('network:connected', false);
     });
+  }
+
+  hideSplashScreen() {
+    if (Splashscreen) {
+      setTimeout(() => {
+        Splashscreen.hide();
+      }, 100);
+    }
   }
 
   ngOnInit() {
@@ -102,7 +111,7 @@ export class ForumApp implements OnInit {
   isUserLoggedIn(): boolean {
     let user = this.authService.getLoggedInUser();
     return user !== null;
-  } 
+  }
 }
 
 ionicBootstrap(ForumApp, [APP_PROVIDERS]);
