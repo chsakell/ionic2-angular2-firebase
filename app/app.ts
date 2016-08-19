@@ -1,6 +1,8 @@
 import {Component, ViewChild, OnInit } from '@angular/core';
-import {Platform, ionicBootstrap, Nav, MenuController, ViewController } from 'ionic-angular';
+import {Platform, ionicBootstrap, Nav, MenuController, ViewController, Events } from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
+import { Network } from 'ionic-native';
+import { Subscription } from '../node_modules/rxjs/Subscription';
 
 import { AuthService } from './shared/services/auth.service';
 import { DataService } from './shared/services/data.service';
@@ -18,16 +20,50 @@ export class ForumApp implements OnInit {
   private rootPage: any;
   private loginPage: LoginPage;
 
+  connectSubscription: Subscription;
+
   constructor(platform: Platform,
     private dataService: DataService,
     private authService: AuthService,
-    private menu: MenuController) {
+    private menu: MenuController,
+    private events: Events) {
+    var self = this;
     this.rootPage = TabsPage;
 
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
+      self.watchForConnection();
+      self.watchForDisconnect();
+    });
+  }
+
+  watchForConnection() {
+    var self = this;
+    let connectSubscription = Network.onConnect().subscribe(() => {
+      console.log('network connected!');
+      // We just got a connection but we need to wait briefly
+      // before we determine the connection type.  Might need to wait
+      // prior to doing any api requests as well.
+      setTimeout(() => {
+        console.log(Network.connection);
+        if (Network.connection === 'wifi') {
+          console.log('we got a wifi connection, woohoo!');
+          self.dataService.goOnline();
+          self.events.publish('network:connected', true);
+        }
+      }, 3000);
+    });
+  }
+
+  watchForDisconnect() {
+    var self = this;
+    // watch network for a disconnect
+    let disconnectSubscription = Network.onDisconnect().subscribe(() => {
+      console.log('network was disconnected :-(');
+      self.dataService.goOffline();
+      self.events.publish('network:connected', false);
     });
   }
 
@@ -38,7 +74,6 @@ export class ForumApp implements OnInit {
       if (user === null) {
         self.menu.close();
         self.nav.setRoot(LoginPage);
-      } else {
       }
     });
   }
@@ -51,7 +86,7 @@ export class ForumApp implements OnInit {
 
     if (page === 'login') {
       if (!(viewCtrl.instance instanceof LoginPage))
-        this.nav.pop();//push(LoginPage);
+        this.nav.pop();
     } else if (page === 'signup') {
       if (!(viewCtrl.instance instanceof SignupPage))
         this.nav.push(SignupPage);
@@ -62,18 +97,12 @@ export class ForumApp implements OnInit {
     var self = this;
     self.menu.close();
     self.authService.signOut();
-    /*
-    self.authService.signOut().then(() => {
-      self.menu.close();
-      self.nav.push(LoginPage);
-    });
-    */
   }
 
   isUserLoggedIn(): boolean {
     let user = this.authService.getLoggedInUser();
     return user !== null;
-  }
+  } 
 }
 
 ionicBootstrap(ForumApp, [APP_PROVIDERS]);

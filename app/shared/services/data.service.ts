@@ -13,6 +13,7 @@ export class DataService {
     commentsRef: any = firebase.database().ref('comments');
     statisticsRef: any = firebase.database().ref('statistics');
     storageRef: any = firebase.storage().ref();
+    connectionRef: any = firebase.database().ref('.info/connected');
 
     defaultImageUrl: string;
 
@@ -21,6 +22,18 @@ export class DataService {
         self.storageRef.child('images/default/profile.png').getDownloadURL().then(function (url) {
             self.defaultImageUrl = url.split('?')[0] + '?alt=media';
         });
+    }
+
+    getConnectionRef() {
+        return this.connectionRef;
+    }
+
+    goOffline() {
+        firebase.database().goOffline(); 
+    }
+
+    goOnline() {
+        firebase.database().goOnline(); 
     }
 
     getDefaultImageUrl() {

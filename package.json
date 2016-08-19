@@ -43,6 +43,7 @@
     "cordova-plugin-inappbrowser",
     "cordova-plugin-camera",
     "cordova-plugin-file",
+    "cordova-plugin-network-information",
     "com-sarriaroman-photoviewer"
   ],
   "cordovaPlatforms": [],

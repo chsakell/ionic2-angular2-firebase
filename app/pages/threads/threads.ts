@@ -24,6 +24,7 @@ export class ThreadsPage implements OnInit {
   private start: number;
   private pageSize: number = 3;
   private loading: boolean = true;
+  private connected: boolean = true;
 
   public threads: Array<IThread> = [];
   public newThreads: Array<IThread> = [];
@@ -41,16 +42,47 @@ export class ThreadsPage implements OnInit {
   ngOnInit() {
     var self = this;
     self.segment = 'all';
-    if (self.authService.getLoggedInUser() === null) {
-      //
-    } else {
+    setTimeout(function () {
+      var connectedRef = self.dataService.getConnectionRef();
+      connectedRef.on('value', function (snap) {
+        console.log(snap.val());
+        if (snap.val() === true) {
+          // OK We are connected..
+          console.log('ok we are connected');
+          if (self.authService.getLoggedInUser() === null) {
+            //
+          } else {
+            self.loadThreads(true).then(() => {
+              self.loading = false;
+            });
+          }
+
+          self.dataService.getStatisticsRef().on('child_changed', self.onThreadAdded);
+          self.events.subscribe('threads:add', self.addNewThreads);
+          self.events.subscribe('network:connected', self.networkConnected);
+        } else {
+          console.log('No we are not');
+          self.connected = false;
+          self.dataService.goOffline();
+          // todo load from SQLite
+        }
+      });
+    }, 1500);
+  }
+
+  public networkConnected = (connection) => {
+    var self = this;
+    self.connected = connection[0];
+    console.log(connection);
+
+    if (self.connected) {
       self.loadThreads(true).then(() => {
         self.loading = false;
       });
-    }
 
-    self.dataService.getStatisticsRef().on('child_changed', self.onThreadAdded);
-    self.events.subscribe('threads:add', self.addNewThreads);
+    } else {
+      self.notify('Connection lost. Working offline..');
+    }
   }
 
   // Notice function declarion to keep the right this reference
@@ -173,7 +205,7 @@ export class ThreadsPage implements OnInit {
           position: 'bottom'
         });
         toast.present();
-        //this.loadThreads(true);
+
         self.addNewThreads();
       }
     });
@@ -214,5 +246,14 @@ export class ThreadsPage implements OnInit {
 
   scrollToTop() {
     this.content.scrollToTop();
+  }
+
+  notify(message: string) {
+    let toast = this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      position: 'top'
+    });
+    toast.present();
   }
 }
