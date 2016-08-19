@@ -42,7 +42,8 @@
     "ionic-plugin-keyboard",
     "cordova-plugin-inappbrowser",
     "cordova-plugin-camera",
-    "cordova-plugin-file"
+    "cordova-plugin-file",
+    "com-sarriaroman-photoviewer"
   ],
   "cordovaPlatforms": [],
   "scripts": {
