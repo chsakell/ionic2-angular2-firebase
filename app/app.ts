@@ -5,6 +5,7 @@ import { Subscription } from '../node_modules/rxjs/Subscription';
 
 import { AuthService } from './shared/services/auth.service';
 import { DataService } from './shared/services/data.service';
+import { SqliteService } from './shared/services/sqlite.service';
 import {TabsPage} from './pages/tabs/tabs';
 import { LoginPage } from './pages/login/login';
 import { SignupPage } from './pages/signup/signup';
@@ -24,6 +25,7 @@ export class ForumApp implements OnInit {
   constructor(platform: Platform,
     private dataService: DataService,
     private authService: AuthService,
+    private sqliteService: SqliteService,
     private menu: MenuController,
     private events: Events) {
     var self = this;
@@ -36,7 +38,10 @@ export class ForumApp implements OnInit {
       self.watchForConnection();
       self.watchForDisconnect();
       Splashscreen.hide();
-      // self.hideSplashScreen();
+      self.sqliteService.InitDatabase();
+      setTimeout(function () {
+        // self.sqliteService.resetDatabase();
+      }, 2000);
     });
   }
 

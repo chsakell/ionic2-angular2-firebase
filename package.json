@@ -45,7 +45,8 @@
     "cordova-plugin-file",
     "cordova-plugin-network-information",
     "cordova-plugin-splashscreen",
-    "com-sarriaroman-photoviewer"
+    "com-sarriaroman-photoviewer",
+    "cordova-sqlite-storage"
   ],
   "cordovaPlatforms": [],
   "scripts": {
