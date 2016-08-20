@@ -6,11 +6,11 @@ import { InAppBrowser } from 'ionic-native';
   templateUrl: 'build/pages/about/about.html'
 })
 export class AboutPage {
-  constructor(private navCtrl: NavController) {
 
+  constructor(private navCtrl: NavController) {
   }
 
   openUrl(url) {
-    InAppBrowser.open(url, '_blank', 'location=yes');
+    let browser = new InAppBrowser(url, '_blank', 'location=yes');
   }
 }
