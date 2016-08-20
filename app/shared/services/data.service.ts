@@ -19,9 +19,13 @@ export class DataService {
 
     constructor() {
         var self = this;
-        self.storageRef.child('images/default/profile.png').getDownloadURL().then(function (url) {
-            self.defaultImageUrl = url.split('?')[0] + '?alt=media';
-        });
+        try {
+            self.storageRef.child('images/default/profile.png').getDownloadURL().then(function (url) {
+                self.defaultImageUrl = url.split('?')[0] + '?alt=media';
+            });
+        } catch (error) {
+            console.log('Data Service error:' + error);
+        }
     }
 
     getConnectionRef() {
@@ -29,11 +33,11 @@ export class DataService {
     }
 
     goOffline() {
-        firebase.database().goOffline(); 
+        firebase.database().goOffline();
     }
 
     goOnline() {
-        firebase.database().goOnline(); 
+        firebase.database().goOnline();
     }
 
     getDefaultImageUrl() {

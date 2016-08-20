@@ -40,7 +40,7 @@ export class ForumApp implements OnInit {
       Splashscreen.hide();
       self.sqliteService.InitDatabase();
       setTimeout(function () {
-        // self.sqliteService.resetDatabase();
+         // self.sqliteService.resetDatabase();
       }, 2000);
     });
   }

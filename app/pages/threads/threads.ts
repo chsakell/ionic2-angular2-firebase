@@ -11,6 +11,7 @@ import { AuthService } from '../../shared/services/auth.service';
 import { DataService } from '../../shared/services/data.service';
 import { MappingsService } from '../../shared/services/mappings.service';
 import { ItemsService } from '../../shared/services/items.service';
+import { SqliteService } from '../../shared/services/sqlite.service';
 
 @Component({
   templateUrl: 'build/pages/threads/threads.html',
@@ -35,6 +36,7 @@ export class ThreadsPage implements OnInit {
     private toastCtrl: ToastController,
     private authService: AuthService,
     private dataService: DataService,
+    private sqliteService: SqliteService,
     private mappingsService: MappingsService,
     private itemsService: ItemsService,
     private events: Events) { }
@@ -66,9 +68,44 @@ export class ThreadsPage implements OnInit {
           self.connected = false;
           self.dataService.goOffline();
           // todo load from SQLite
+          if (self.threads.length === 0)
+            self.loadSqliteThreads();
         }
       });
     }, 3000);
+  }
+
+  loadSqliteThreads() {
+    let self = this;
+
+    if (self.threads.length > 0)
+      return;
+
+    self.threads = [];
+    console.log('Loading from db..');
+    self.sqliteService.getThreads().then((data) => {
+      if (data.rows.length > 0) {
+        for (var i = 0; i < data.rows.length; i++) {
+          let thread: IThread = {
+            key: data.rows.item(i).key,
+            title: data.rows.item(i).title,
+            question: data.rows.item(i).question,
+            category: data.rows.item(i).category,
+            dateCreated: data.rows.item(i).datecreated,
+            user: { uid: data.rows.item(i).user, username: data.rows.item(i).username },
+            comments: data.rows.item(i).comments
+          };
+
+          self.threads.push(thread);
+          console.log('Thread added from db:' + thread.key);
+          console.log(thread);
+        }
+        self.loading = false;
+      }
+    }, (error) => {
+      console.log('Error: ' + JSON.stringify(error));
+      self.loading = true;
+    });
   }
 
   public networkConnected = (connection) => {
@@ -83,6 +120,13 @@ export class ThreadsPage implements OnInit {
 
     } else {
       self.notify('Connection lost. Working offline..');
+      // save current threads..
+      self.sqliteService.resetDatabase();
+      setTimeout(function () {
+        console.log(self.threads.length);
+        self.sqliteService.saveThreads(self.threads);
+        self.loadSqliteThreads();
+      }, 2000);
     }
   }
 

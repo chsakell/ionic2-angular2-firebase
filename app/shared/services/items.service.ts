@@ -52,6 +52,11 @@ export class ItemsService {
         _.remove(array, predicate);
     }
 
+    includesItem<T>(array: Array<T>, predicate: Predicate<T>) {
+        let result = _.filter(array, predicate);
+        return result.length > 0;
+    }
+
     /*
     Finds a specific item in an array using a predicate and replaces it
     */

@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { SQLite } from 'ionic-native';
 
 import { IThread, IComment, IUser } from '../interfaces';
+import { ItemsService } from '../services/items.service';
 
 @Injectable()
 export class SqliteService {
     db: SQLite;
 
-    constructor() {
+    constructor(private itemsService: ItemsService) {
 
     }
 
@@ -18,9 +19,9 @@ export class SqliteService {
             name: 'forumdb.db',
             location: 'default' // the location field is required
         }).then(() => {
-             self.createThreads();
-             self.createComments();
-             self.createUsers();
+            self.createThreads();
+            self.createComments();
+            self.createUsers();
         }, (err) => {
             console.error('Unable to open database: ', err);
         });
@@ -50,7 +51,7 @@ export class SqliteService {
 
     resetUsers() {
         var self = this;
-        let query = 'DROP TABLE Users';
+        let query = 'DELETE FROM Users';
         self.db.executeSql(query, {}).then((data) => {
             console.log('Users table dropped');
         }, (err) => {
@@ -60,7 +61,7 @@ export class SqliteService {
 
     resetThreads() {
         var self = this;
-        let query = 'DROP TABLE Threads';
+        let query = 'DELETE FROM Threads';
         self.db.executeSql(query, {}).then((data) => {
             console.log('Threads table dropped');
         }, (err) => {
@@ -70,7 +71,7 @@ export class SqliteService {
 
     resetComments() {
         var self = this;
-        let query = 'DROP TABLE Comments';
+        let query = 'DELETE FROM Comments';
         self.db.executeSql(query, {}).then((data) => {
             console.log('Comments table dropped');
         }, (err) => {
@@ -106,7 +107,7 @@ export class SqliteService {
 
     createComments() {
         var self = this;
-        self.db.executeSql('CREATE TABLE IF NOT EXISTS Comments ( KEY VARCHAR(255) PRIMARY KEY NOT NULL, thread VARCHAR(255) NOT NULL, text text NOT NULL, USER VARCHAR(255) NOT NULL, datecreated text, votesUp INT NULL, votesDown INT NULL);', {}).then(() => {
+        self.db.executeSql('CREATE TABLE IF NOT EXISTS Comments ( key VARCHAR(255) PRIMARY KEY NOT NULL, thread VARCHAR(255) NOT NULL, text text NOT NULL, USER VARCHAR(255) NOT NULL, datecreated text, votesUp INT NULL, votesDown INT NULL);', {}).then(() => {
         }, (err) => {
             console.error('Unable to create Comments table: ', err);
         });
@@ -120,16 +121,11 @@ export class SqliteService {
         });
     }
 
-    checkUser(user: IUser) {
+    saveUsers(users: IUser[]) {
         var self = this;
-        self.db.executeSql('SELECT * FROM Users where uid = ?', [user.uid]).then((data) => {
-            if (data.rows.length > 0) {
-                self.updateUser(user);
-            } else {
-                self.addUser(user);
-            }
-        }, (err) => {
-            console.error('Unable to check user: ', err);
+
+        users.forEach(user => {
+            self.addUser(user);
         });
     }
 
@@ -137,23 +133,31 @@ export class SqliteService {
         var self = this;
         let query: string = 'INSERT INTO Users (uid, username) Values (?,?)';
         self.db.executeSql(query, [user.uid, user.username]).then((data) => {
+            console.log('user ' + user.username + ' added');
         }, (err) => {
             console.error('Unable to add user: ', err);
         });
     }
 
-    updateUser(user: IUser) {
-        var self = this;
-        let query: string = 'UPDATE Users SET username = ? Where uid = ?';
-        self.db.executeSql(query, [user.username, user.uid]).then((data) => {
-        }, (err) => {
-            console.error('Unable to update user: ', err);
+    saveThreads(threads: IThread[]) {
+        let self = this;
+        let users: IUser[] = [];
+
+        threads.forEach(thread => {
+            if (!self.itemsService.includesItem<IUser>(users, u => u.uid === thread.user.uid)) {
+                console.log('in add user..' + thread.user.username);
+                users.push(thread.user);
+            } else {
+                console.log('user found: ' + thread.user.username);
+            }
+            self.addThread(thread);
         });
+
+        self.saveUsers(users);
     }
 
     addThread(thread: IThread) {
         var self = this;
-        self.checkUser(thread.user);
 
         let query: string = 'INSERT INTO Threads (key, title, question, category, datecreated, user, comments) VALUES (?,?,?,?,?,?,?)';
         self.db.executeSql(query, [
@@ -165,8 +169,14 @@ export class SqliteService {
             thread.user.uid,
             thread.comments
         ]).then((data) => {
+            console.log('thread ' + thread.key + ' added');
         }, (err) => {
             console.error('Unable to add thread: ', err);
         });
+    }
+
+    getThreads(): any {
+        var self = this;
+        return self.db.executeSql('SELECT Threads.*, username FROM Threads INNER JOIN Users ON Threads.user = Users.uid', {});
     }
 }

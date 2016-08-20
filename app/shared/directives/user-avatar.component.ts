@@ -18,15 +18,19 @@ export class UserAvatarComponent implements OnInit {
     ngOnInit() {
         var self = this;
         let defaultUrl = self.dataService.getDefaultImageUrl();
-        if (defaultUrl !== null) {
-            this.imageUrl = defaultUrl.replace('default', self.user.uid) + '&t=' + (new Date().getTime());
+        if (defaultUrl == null) {
+            self.imageUrl = 'images/avatar.png';
             self.imageLoaded = true;
-        } else {
             console.log('get from firebae');
+            /*
             self.dataService.getStorageRef().child('images/' + self.user.uid + '/profile.png').getDownloadURL().then(function (url) {
                 self.imageUrl = url.split('?')[0] + '?alt=media' + '&t=' + (new Date().getTime());
                 self.imageLoaded = true;
             });
+            */
+        } else {
+            this.imageUrl = defaultUrl.replace('default', self.user.uid) + '&t=' + (new Date().getTime());
+            self.imageLoaded = true;
         }
     }
 
