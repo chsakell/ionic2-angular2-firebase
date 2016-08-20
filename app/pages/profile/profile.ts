@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NavController, LoadingController, ActionSheetController } from 'ionic-angular';
 import { Camera, CameraOptions } from 'ionic-native';
 
+import { IUser } from '../../shared/interfaces';
 import { UserAvatarComponent } from '../../shared/directives/user-avatar.component'; 
 import { AuthService } from '../../shared/services/auth.service';
 import { DataService } from '../../shared/services/data.service';
@@ -14,6 +15,7 @@ declare var window: any;
 })
 export class ProfilePage implements OnInit {
   userDataLoaded: boolean = false;
+  user: IUser;
   username: string;
   userProfile = {};
   firebaseAccount: any = {};
@@ -23,9 +25,7 @@ export class ProfilePage implements OnInit {
     private loadingCtrl: LoadingController,
     private actionSheeCtrl: ActionSheetController,
     private authService: AuthService,
-    private dataService: DataService) {
-
-  }
+    private dataService: DataService) { }
 
   ngOnInit() {
     this.loadUserProfile();
@@ -46,6 +46,12 @@ export class ProfilePage implements OnInit {
           totalFavorites: userData.hasOwnProperty('favorites') === true ?
             Object.keys(userData.favorites).length : 0
         };
+
+        self.user = {
+          uid : self.firebaseAccount.uid,
+          username : userData.username
+        };
+
         self.userDataLoaded = true;
       }).catch(function (error) {
         console.log(error.code);
@@ -142,11 +148,11 @@ export class ProfilePage implements OnInit {
       quality: 95,
       destinationType: Camera.DestinationType.DATA_URL,
       sourceType: pictureSourceType,
-      allowEdit: true,
       encodingType: Camera.EncodingType.PNG,
-      targetWidth: 100,
-      targetHeight: 100,
-      saveToPhotoAlbum: true
+      targetWidth: 400,
+      targetHeight: 400,
+      saveToPhotoAlbum: true,
+      correctOrientation: true
     };
 
     Camera.getPicture(options).then(imageData => {
