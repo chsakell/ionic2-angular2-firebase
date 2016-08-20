@@ -267,9 +267,13 @@ export class ThreadsPage implements OnInit {
   */
 
   viewComments(key: string) {
-    this.navCtrl.push(ThreadCommentsPage, {
-      threadKey: key
-    });
+    if (this.connected) {
+      this.navCtrl.push(ThreadCommentsPage, {
+        threadKey: key
+      });
+    } else {
+      this.notify('Network not found..');
+    }
   }
 
   reloadThreads(refresher) {
