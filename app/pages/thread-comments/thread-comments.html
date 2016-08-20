@@ -19,7 +19,7 @@
 
                 <ion-item>
                     <ion-avatar item-left>
-                        <forum-user-avatar [uid]="comment.user.uid"></forum-user-avatar>
+                        <forum-user-avatar [user]="comment.user"></forum-user-avatar>
                     </ion-avatar>
                     <h2>{{comment.user.username}}</h2>
                     <p>{{comment.dateCreated | date:'medium'}}</p>

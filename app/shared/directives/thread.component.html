@@ -3,7 +3,7 @@
 
         <ion-item>
             <ion-avatar item-left>
-                <forum-user-avatar [uid]="thread.user.uid"></forum-user-avatar>
+                <forum-user-avatar [user]="thread.user"></forum-user-avatar>
             </ion-avatar>
             <h2>{{thread.user.username}}</h2>
             <p>{{thread.dateCreated | date:'medium'}}</p>
