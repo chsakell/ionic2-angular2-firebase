@@ -60,6 +60,7 @@ export class ForumApp implements OnInit {
         console.log(Network.connection);
         if (Network.connection === 'wifi') {
           console.log('we got a wifi connection, woohoo!');
+          console.log('Firebase: Go Online..');
           self.dataService.goOnline();
           self.events.publish('network:connected', true);
         }
@@ -72,6 +73,7 @@ export class ForumApp implements OnInit {
     // watch network for a disconnect
     let disconnectSubscription = Network.onDisconnect().subscribe(() => {
       console.log('network was disconnected :-(');
+      console.log('Firebase: Go Offline..');
       self.dataService.goOffline();
       self.events.publish('network:connected', false);
     });
@@ -98,7 +100,6 @@ export class ForumApp implements OnInit {
 
   openPage(page) {
     let viewCtrl: ViewController = this.nav.getActive();
-    // console.log(viewCtrl);
     // close the menu when clicking a link from the menu
     this.menu.close();
 

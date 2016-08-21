@@ -48,11 +48,10 @@ export class ThreadsPage implements OnInit {
 
     setTimeout(function () {
       var connectedRef = self.dataService.getConnectionRef();
-      connectedRef.on('value', function (snap) {
+      connectedRef.once('value', function (snap) {
         console.log(snap.val());
         if (snap.val() === true) {
-          // OK We are connected..
-          console.log('ok we are connected');
+          console.log('Firebase: ok we are connected');
           if (self.authService.getLoggedInUser() === null) {
             //
           } else {
@@ -64,7 +63,7 @@ export class ThreadsPage implements OnInit {
           self.dataService.getStatisticsRef().on('child_changed', self.onThreadAdded);
           self.events.subscribe('threads:add', self.addNewThreads);
         } else {
-          console.log('No we are not');
+          console.log('Firebase: No connection:');
           self.connected = false;
           self.dataService.goOffline();
           // todo load from SQLite
@@ -72,7 +71,7 @@ export class ThreadsPage implements OnInit {
             self.loadSqliteThreads();
         }
       });
-    }, 3000);
+    }, 2000);
   }
 
   loadSqliteThreads() {
@@ -111,7 +110,7 @@ export class ThreadsPage implements OnInit {
   public networkConnected = (connection) => {
     var self = this;
     self.connected = connection[0];
-    console.log(connection);
+    console.log('NetworkConnected event: ' + self.connected);
 
     if (self.connected) {
       self.loadThreads(true).then(() => {
