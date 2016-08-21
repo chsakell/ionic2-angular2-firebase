@@ -214,8 +214,9 @@ export class ThreadsPage implements OnInit {
       this.selectedSegment = this.segment;
       if (this.selectedSegment === 'favorites')
         this.queryText = '';
-      // Initialize
-      this.loadThreads(true);
+      if (this.connected)
+        // Initialize
+        this.loadThreads(true);
     } else {
       this.scrollToTop();
     }
@@ -257,14 +258,6 @@ export class ThreadsPage implements OnInit {
 
     modalPage.present();
   }
-
-  /*
-  viewComments(thread: IThread) {
-    this.navCtrl.push(ThreadCommentsPage, {
-      threadKey: thread.key
-    });
-  }
-  */
 
   viewComments(key: string) {
     if (this.connected) {
