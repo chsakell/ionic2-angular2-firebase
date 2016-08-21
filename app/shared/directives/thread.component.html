@@ -13,12 +13,11 @@
         <div class="thread-card-title wordwrap">
             {{thread.title}}
         </div>
-        <div class="thread-card-question wordwrap">
+        <div class="thread-card-question wordwrap left-border-primary">
             {{thread.question}}
         </div>
 
-        <ion-row>
-
+        <ion-row class="left-border-primary">
             <ion-col>
                 <button primary clear small (click)="viewComments(thread.key)">
         <ion-icon name="quote"></ion-icon>

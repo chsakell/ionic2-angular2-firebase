@@ -25,11 +25,11 @@
                     <p>{{comment.dateCreated | date:'medium'}}</p>
                 </ion-item>
 
-                <ion-card-content>
+                <ion-card-content class="left-border-primary">
                     <p>{{comment.text}}</p>
                 </ion-card-content>
 
-                <ion-row>
+                <ion-row class="left-border-primary">
                     <ion-col>
                         <button primary clear small (click)="vote(true,comment)">
         <ion-icon name="arrow-dropup"></ion-icon>
