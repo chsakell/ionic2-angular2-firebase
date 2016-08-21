@@ -27,21 +27,6 @@ export class SqliteService {
         });
     }
 
-    runTest() {
-        let thread: IThread = {
-            key: '123456789',
-            title: 'First thread',
-            question: 'what is your pet name?',
-            category: 'pets',
-            dateCreated: new Date().toString(),
-            user: { uid: '39402942424', username: 'Chris' },
-            comments: 4
-        };
-
-        this.addThread(thread);
-        this.printThreads();
-    }
-
     resetDatabase() {
         var self = this;
         self.resetUsers();
@@ -53,9 +38,9 @@ export class SqliteService {
         var self = this;
         let query = 'DELETE FROM Users';
         self.db.executeSql(query, {}).then((data) => {
-            console.log('Users table dropped');
+            console.log('Users removed');
         }, (err) => {
-            console.error('Unable to print threads: ', err);
+            console.error('Unable to remove users: ', err);
         });
     }
 
@@ -63,9 +48,9 @@ export class SqliteService {
         var self = this;
         let query = 'DELETE FROM Threads';
         self.db.executeSql(query, {}).then((data) => {
-            console.log('Threads table dropped');
+            console.log('Threads removed');
         }, (err) => {
-            console.error('Unable to drop table Threads: ', err);
+            console.error('Unable to remove Threads: ', err);
         });
     }
 
@@ -73,9 +58,9 @@ export class SqliteService {
         var self = this;
         let query = 'DELETE FROM Comments';
         self.db.executeSql(query, {}).then((data) => {
-            console.log('Comments table dropped');
+            console.log('Comments removed');
         }, (err) => {
-            console.error('Unable to drop table Commments: ', err);
+            console.error('Unable to remove Commments: ', err);
         });
     }
 
