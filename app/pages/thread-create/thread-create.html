@@ -26,11 +26,11 @@
         <ion-item>
             <ion-label>Category</ion-label>
             <ion-select multiple="false" [formControl]="category">
-                <ion-option value="aspnet" checked="true">ASP.NET</ion-option>
-                <ion-option value="csharp">C#</ion-option>
-                <ion-option value="java">JAVA</ion-option>
-                <ion-option value="nodejs">Node.js</ion-option>
-                <ion-option value="angular">Angular</ion-option>
+                <ion-option value="components" checked="true">Components</ion-option>
+                <ion-option value="native">Native</ion-option>
+                <ion-option value="theming">Theming</ion-option>
+                <ion-option value="ionicons">Ionicons</ion-option>
+                <ion-option value="cli">CLI</ion-option>
             </ion-select>
         </ion-item>
         <div *ngIf="category.hasError('minlength')" class="error-box">* Select at least one category.</div>
