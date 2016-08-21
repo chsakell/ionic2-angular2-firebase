@@ -243,7 +243,7 @@ export class ThreadsPage implements OnInit {
     var self = this;
     let modalPage = this.modalCtrl.create(ThreadCreatePage);
 
-    modalPage.onDidDismiss((data: any[]) => {
+    modalPage.onDidDismiss((data: any) => {
       if (data) {
         let toast = this.toastCtrl.create({
           message: 'Thread created',
@@ -251,6 +251,9 @@ export class ThreadsPage implements OnInit {
           position: 'bottom'
         });
         toast.present();
+
+        if (data.priority === 1)
+          self.newThreads.push(data.thread);
 
         self.addNewThreads();
       }

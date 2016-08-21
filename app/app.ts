@@ -38,10 +38,14 @@ export class ForumApp implements OnInit {
       self.watchForConnection();
       self.watchForDisconnect();
       Splashscreen.hide();
+
+      console.log('in ready..');
+      let array: string[] = platform.platforms();
+      console.log(array);
+      let isAndroid: boolean = platform.is('android');
+      let isIos: boolean = platform.is('ios');
+      let isWindows: boolean = platform.is('windows');
       self.sqliteService.InitDatabase();
-      setTimeout(function () {
-         // self.sqliteService.resetDatabase();
-      }, 2000);
     });
   }
 

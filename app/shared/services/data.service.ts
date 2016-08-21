@@ -7,7 +7,7 @@ declare var firebase: any;
 
 @Injectable()
 export class DataService {
-
+    databaseRef: any = firebase.database();
     usersRef: any = firebase.database().ref('users');
     threadsRef: any = firebase.database().ref('threads');
     commentsRef: any = firebase.database().ref('comments');
@@ -23,9 +23,43 @@ export class DataService {
             self.storageRef.child('images/default/profile.png').getDownloadURL().then(function (url) {
                 self.defaultImageUrl = url.split('?')[0] + '?alt=media';
             });
+            self.InitData();
         } catch (error) {
             console.log('Data Service error:' + error);
         }
+    }
+
+    private InitData() {
+        let self = this;
+        let firstThreadRef = this.threadsRef.push();
+        console.log('in init data');
+        self.getStatisticsRef().child('threads').once('value').then(function (dataSnapshot) {
+            let currentThreads = dataSnapshot.val();
+
+            if (currentThreads === null) {
+                self.getStatisticsRef().update({
+                    threads: 1
+                });
+
+                let thread: IThread = {
+                    key: null,
+                    title: 'Welcome to Forum!',
+                    question: 'Congratulations! It seems that you have successfully setup the Forum app.',
+                    category: 'welcome',
+                    dateCreated: new Date().toString(),
+                    user: { uid: 'default', username: 'Administrator' },
+                    comments: 0
+                };
+
+                firstThreadRef.setWithPriority(thread, 1).then(function(dataShapshot) {
+                    console.log('Congratulations! You have created the first thread!');
+                });
+            }
+        });
+    }
+
+    getDatabaseRef() {
+        return this.databaseRef;
     }
 
     getConnectionRef() {

@@ -58,7 +58,7 @@ export class ThreadCreatePage implements OnInit {
 
         self.dataService.getTotalThreads().then(function (snapshot) {
           let currentNumber = snapshot.val();
-          let newPriority: number = currentNumber === null ? 0 : (currentNumber + 1);
+          let newPriority: number = currentNumber === null ? 1 : (currentNumber + 1);
 
           let newThread: IThread = {
             key: null,
@@ -75,7 +75,8 @@ export class ThreadCreatePage implements OnInit {
               loader.dismiss()
                 .then(() => {
                   self.viewCtrl.dismiss({
-                    thread: newThread
+                    thread: newThread,
+                    priority: newPriority
                   });
                 });
             }, function (error) {
