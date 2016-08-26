@@ -7,8 +7,6 @@ import { UserAvatarComponent } from '../../shared/directives/user-avatar.compone
 import { AuthService } from '../../shared/services/auth.service';
 import { DataService } from '../../shared/services/data.service';
 
-declare var window: any;
-
 @Component({
   templateUrl: 'build/pages/profile/profile.html',
   directives: [UserAvatarComponent]
