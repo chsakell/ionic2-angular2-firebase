@@ -48,7 +48,7 @@ export class ThreadsPage implements OnInit {
 
     setTimeout(function () {
       var connectedRef = self.dataService.getConnectionRef();
-      connectedRef.once('value', function (snap) {
+      connectedRef.on('value', function (snap) {
         console.log(snap.val());
         if (snap.val() === true) {
           console.log('Firebase: ok we are connected');
@@ -111,8 +111,9 @@ export class ThreadsPage implements OnInit {
     var self = this;
     self.connected = connection[0];
     console.log('NetworkConnected event: ' + self.connected);
-
+    
     if (self.connected) {
+      self.threads = [];
       self.loadThreads(true).then(() => {
         self.loading = false;
       });
