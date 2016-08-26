@@ -30,7 +30,7 @@ export class DataService {
     }
 
     private InitData() {
-        let self = this;
+        let self = this;/*
         let firstThreadRef = this.threadsRef.push();
         console.log('in init data');
         self.getStatisticsRef().child('threads').once('value').then(function (dataSnapshot) {
@@ -50,11 +50,43 @@ export class DataService {
                     user: { uid: 'default', username: 'Administrator' },
                     comments: 0
                 };
-
+                
                 firstThreadRef.setWithPriority(thread, 1).then(function(dataShapshot) {
                     console.log('Congratulations! You have created the first thread!');
                 });
             }
+        });*/
+        // Set statistics/threads = 1 for the first time only
+        self.getStatisticsRef().child('threads').transaction(function (currentRank) {
+            console.log(currentRank);
+            if (currentRank === null) {
+                console.log(currentRank);
+                return 1;
+            }
+        }, function (error, committed, snapshot) {
+            if (error) {
+                console.log('Transaction failed abnormally!', error);
+            } else if (!committed) {
+                console.log('We aborted the transaction because there is already one thread.');
+            } else {
+                console.log('Threads number initialized!');
+
+                let thread: IThread = {
+                    key: null,
+                    title: 'Welcome to Forum!',
+                    question: 'Congratulations! It seems that you have successfully setup the Forum app.',
+                    category: 'welcome',
+                    dateCreated: new Date().toString(),
+                    user: { uid: 'default', username: 'Administrator' },
+                    comments: 0
+                };
+
+                let firstThreadRef = self.threadsRef.push();
+                firstThreadRef.setWithPriority(thread, 1).then(function(dataShapshot) {
+                    console.log('Congratulations! You have created the first thread!');
+                });
+            }
+            console.log('commited', snapshot.val());
         });
     }
 
