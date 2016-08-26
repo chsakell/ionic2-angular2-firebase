@@ -63,7 +63,7 @@ export class ForumApp implements OnInit {
       // prior to doing any api requests as well.
       setTimeout(() => {
         console.log(Network.connection);
-        console.log('we got a wifi connection, woohoo!');
+        console.log('we got a connection..');
         console.log('Firebase: Go Online..');
         self.dataService.goOnline();
         self.events.publish('network:connected', true);

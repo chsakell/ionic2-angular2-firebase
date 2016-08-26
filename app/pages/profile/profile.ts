@@ -81,10 +81,6 @@ export class ProfilePage implements OnInit {
     return self.dataService.getStorageRef().child('images/' + self.firebaseAccount.uid + '/profile.png').getDownloadURL();
   }
 
-  getFirebaseAccount() {
-    var self = this;
-  }
-
   getUserThreads() {
     var self = this;
 
