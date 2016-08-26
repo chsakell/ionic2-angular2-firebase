@@ -108,10 +108,7 @@ export class ForumApp implements OnInit {
     // close the menu when clicking a link from the menu
     this.menu.close();
 
-    if (page === 'login') {
-      if (!(viewCtrl.instance instanceof LoginPage))
-        this.nav.pop();
-    } else if (page === 'signup') {
+    if (page === 'signup') {
       if (!(viewCtrl.instance instanceof SignupPage))
         this.nav.push(SignupPage);
     }
