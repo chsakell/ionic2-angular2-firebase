@@ -58,9 +58,7 @@ export class DataService {
         });*/
         // Set statistics/threads = 1 for the first time only
         self.getStatisticsRef().child('threads').transaction(function (currentRank) {
-            console.log(currentRank);
             if (currentRank === null) {
-                console.log(currentRank);
                 return 1;
             }
         }, function (error, committed, snapshot) {
