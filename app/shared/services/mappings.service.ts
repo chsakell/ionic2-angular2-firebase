@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 
 import { IThread, IComment } from '../interfaces';
-import { DataService } from '../services//data.service';
 import { ItemsService } from '../services/items.service';
 
 @Injectable()
 export class MappingsService {
 
-    constructor(private dataService: DataService,
-        private itemsService: ItemsService) { }
+    constructor(private itemsService: ItemsService) { }
 
     getThreads(snapshot: any): Array<IThread> {
         let threads: Array<IThread> = [];
