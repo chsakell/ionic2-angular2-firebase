@@ -11,6 +11,9 @@ import { LoginPage } from './pages/login/login';
 import { SignupPage } from './pages/signup/signup';
 import { APP_PROVIDERS } from './app.providers';
 
+
+declare var window: any;
+
 @Component({
   templateUrl: 'build/app.html'
 })
@@ -32,20 +35,22 @@ export class ForumApp implements OnInit {
     this.rootPage = TabsPage;
 
     platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      StatusBar.styleDefault();
-      self.watchForConnection();
-      self.watchForDisconnect();
-      Splashscreen.hide();
+      if (window.cordova) {
+        // Okay, so the platform is ready and our plugins are available.
+        // Here you can do any higher level native things you might need.
+        StatusBar.styleDefault();
+        self.watchForConnection();
+        self.watchForDisconnect();
+        Splashscreen.hide();
 
-      console.log('in ready..');
-      let array: string[] = platform.platforms();
-      console.log(array);
-      let isAndroid: boolean = platform.is('android');
-      let isIos: boolean = platform.is('ios');
-      let isWindows: boolean = platform.is('windows');
-      self.sqliteService.InitDatabase();
+        console.log('in ready..');
+        let array: string[] = platform.platforms();
+        console.log(array);
+        let isAndroid: boolean = platform.is('android');
+        let isIos: boolean = platform.is('ios');
+        let isWindows: boolean = platform.is('windows');
+        self.sqliteService.InitDatabase();
+      }
     });
   }
 
