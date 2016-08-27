@@ -107,7 +107,7 @@ export class SignupPage implements OnInit {
 
     CreateAndUploadDefaultImage() {
         let self = this;
-        let imageData = 'images/avatar.png';
+        let imageData = 'images/profile.png';
 
         var xhr = new XMLHttpRequest();
         xhr.open('GET', imageData, true);

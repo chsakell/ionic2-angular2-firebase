@@ -56,7 +56,7 @@ export class ProfilePage implements OnInit {
         self.userProfile = {
           username: userData.username,
           dateOfBirth: userData.dateOfBirth,
-          image: 'images/avatar.png',
+          image: 'images/profile.png',
           totalFavorites: userData.hasOwnProperty('favorites') === true ?
             Object.keys(userData.favorites).length : 0
         };

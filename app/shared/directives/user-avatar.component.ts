@@ -19,7 +19,7 @@ export class UserAvatarComponent implements OnInit {
         var self = this;
         let defaultUrl = self.dataService.getDefaultImageUrl();
         if (defaultUrl == null) {
-            self.imageUrl = 'images/avatar.png';
+            self.imageUrl = 'images/profile.png';
             self.imageLoaded = true;
             console.log('get from firebase');
             /*
