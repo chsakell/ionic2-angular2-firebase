@@ -2,7 +2,7 @@
 
 Blog post: <a href="http://wp.me/p3mRWu-19N" target="_blank">Building hybrid mobile apps using Ionic 2 and Firebase</a>
 
-<a href="http://wp.me/p3mRWu-11L" rel="attachment wp-att-3961" target="_blank"><img src="https://chsakell.files.wordpress.com/2016/08/ionic2-angular2-firebase-36.png" alt="aspnet5-agnular2-03" class="alignnone size-full wp-image-3961"></a>
+<a href="http://wp.me/p3mRWu-19N" rel="attachment wp-att-3961" target="_blank"><img src="https://chsakell.files.wordpress.com/2016/08/ionic2-angular2-firebase-36.png" alt="aspnet5-agnular2-03" class="alignnone size-full wp-image-3961"></a>
 
 <h3>Frameworks - Tools - Libraries</h3>
 <ul>
