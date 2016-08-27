@@ -16,10 +16,12 @@ export class DataService {
     connectionRef: any = firebase.database().ref('.info/connected');
 
     defaultImageUrl: string;
+    connected: boolean = false;
 
     constructor() {
         var self = this;
         try {
+            self.checkFirebaseConnection();
             self.storageRef.child('images/default/profile.png').getDownloadURL().then(function (url) {
                 self.defaultImageUrl = url.split('?')[0] + '?alt=media';
             });
@@ -29,33 +31,31 @@ export class DataService {
         }
     }
 
+    checkFirebaseConnection() {
+        try {
+            var self = this;
+            var connectedRef = self.getConnectionRef();
+            connectedRef.on('value', function (snap) {
+                console.log(snap.val());
+                if (snap.val() === true) {
+                    console.log('Firebase: Connected:');
+                    self.connected = true;
+                } else {
+                    console.log('Firebase: No connection:');
+                    self.connected = false;
+                }
+            });
+        } catch (error) {
+            self.connected = false;
+        }
+    }
+
+    isFirebaseConnected() {
+        return this.connected;
+    }
+
     private InitData() {
-        let self = this;/*
-        let firstThreadRef = this.threadsRef.push();
-        console.log('in init data');
-        self.getStatisticsRef().child('threads').once('value').then(function (dataSnapshot) {
-            let currentThreads = dataSnapshot.val();
-
-            if (currentThreads === null) {
-                self.getStatisticsRef().update({
-                    threads: 1
-                });
-
-                let thread: IThread = {
-                    key: null,
-                    title: 'Welcome to Forum!',
-                    question: 'Congratulations! It seems that you have successfully setup the Forum app.',
-                    category: 'welcome',
-                    dateCreated: new Date().toString(),
-                    user: { uid: 'default', username: 'Administrator' },
-                    comments: 0
-                };
-                
-                firstThreadRef.setWithPriority(thread, 1).then(function(dataShapshot) {
-                    console.log('Congratulations! You have created the first thread!');
-                });
-            }
-        });*/
+        let self = this;
         // Set statistics/threads = 1 for the first time only
         self.getStatisticsRef().child('threads').transaction(function (currentRank) {
             if (currentRank === null) {
@@ -80,7 +80,7 @@ export class DataService {
                 };
 
                 let firstThreadRef = self.threadsRef.push();
-                firstThreadRef.setWithPriority(thread, 1).then(function(dataShapshot) {
+                firstThreadRef.setWithPriority(thread, 1).then(function (dataShapshot) {
                     console.log('Congratulations! You have created the first thread!');
                 });
             }

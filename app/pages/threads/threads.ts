@@ -25,11 +25,13 @@ export class ThreadsPage implements OnInit {
   private start: number;
   private pageSize: number = 3;
   private loading: boolean = true;
-  private connected: boolean = true;
+  private internetConnected: boolean = true;
 
   public threads: Array<IThread> = [];
   public newThreads: Array<IThread> = [];
   public favoriteThreadKeys: string[];
+
+  private firebaseConnectionAttempts: number = 0;
 
   constructor(private navCtrl: NavController,
     private modalCtrl: ModalController,
@@ -45,33 +47,34 @@ export class ThreadsPage implements OnInit {
     var self = this;
     self.segment = 'all';
     self.events.subscribe('network:connected', self.networkConnected);
+    self.events.subscribe('threads:add', self.addNewThreads);
 
-    setTimeout(function () {
-      var connectedRef = self.dataService.getConnectionRef();
-      connectedRef.on('value', function (snap) {
-        console.log(snap.val());
-        if (snap.val() === true) {
-          console.log('Firebase: ok we are connected');
-          if (self.authService.getLoggedInUser() === null) {
-            //
-          } else {
-            self.loadThreads(true).then(() => {
-              self.loading = false;
-            });
-          }
+    self.checkFirebase();
+  }
 
-          self.dataService.getStatisticsRef().on('child_changed', self.onThreadAdded);
-          self.events.subscribe('threads:add', self.addNewThreads);
-        } else {
-          console.log('Firebase: No connection:');
-          self.connected = false;
+  checkFirebase() {
+    let self = this;
+    if (!self.dataService.isFirebaseConnected()) {
+      setTimeout(function () {    
+        console.log('Retry : ' + self.firebaseConnectionAttempts);
+        self.firebaseConnectionAttempts++;                     
+        if (self.firebaseConnectionAttempts < 5) {            
+          self.checkFirebase();             
+        } else {                 
+          self.internetConnected = false;
           self.dataService.goOffline();
-          // todo load from SQLite
-          if (self.threads.length === 0)
-            self.loadSqliteThreads();
+          self.loadSqliteThreads();
         }
-      });
-    }, 2000);
+      }, 1000);
+    } else {
+      console.log('Firebase connection found (threads.ts) - attempt: ' + self.firebaseConnectionAttempts);
+      self.dataService.getStatisticsRef().on('child_changed', self.onThreadAdded);
+      if (self.authService.getLoggedInUser() === null) {
+        //
+      } else {
+        self.loadThreads(true);
+      }
+    }
   }
 
   loadSqliteThreads() {
@@ -83,6 +86,7 @@ export class ThreadsPage implements OnInit {
     self.threads = [];
     console.log('Loading from db..');
     self.sqliteService.getThreads().then((data) => {
+      console.log('Found in db: ' + data.rows.length + ' threads');
       if (data.rows.length > 0) {
         for (var i = 0; i < data.rows.length; i++) {
           let thread: IThread = {
@@ -109,24 +113,20 @@ export class ThreadsPage implements OnInit {
 
   public networkConnected = (connection) => {
     var self = this;
-    self.connected = connection[0];
-    console.log('NetworkConnected event: ' + self.connected);
-    
-    if (self.connected) {
-      self.threads = [];
-      self.loadThreads(true).then(() => {
-        self.loading = false;
-      });
+    self.internetConnected = connection[0];
+    console.log('NetworkConnected event: ' + self.internetConnected);
 
+    if (self.internetConnected) {
+      self.threads = [];
+      self.loadThreads(true);
     } else {
       self.notify('Connection lost. Working offline..');
       // save current threads..
-      self.sqliteService.resetDatabase();
       setTimeout(function () {
         console.log(self.threads.length);
         self.sqliteService.saveThreads(self.threads);
         self.loadSqliteThreads();
-      }, 2000);
+      }, 1000);
     }
   }
 
@@ -163,24 +163,24 @@ export class ThreadsPage implements OnInit {
       self.newThreads = [];
 
       if (self.segment === 'all') {
-        return this.dataService.getTotalThreads().then(function (snapshot) {
+        this.dataService.getTotalThreads().then(function (snapshot) {
           self.start = snapshot.val();
           self.getThreads();
         });
       } else {
         self.start = 0;
         self.favoriteThreadKeys = [];
-        return self.dataService.getFavoriteThreads(self.authService.getLoggedInUser().uid).then(function (dataSnapshot) {
+        self.dataService.getFavoriteThreads(self.authService.getLoggedInUser().uid).then(function (dataSnapshot) {
           let favoriteThreads = dataSnapshot.val();
           self.itemsService.getKeys(favoriteThreads).forEach(function (threadKey) {
             self.start++;
             self.favoriteThreadKeys.push(threadKey);
           });
-          return self.getThreads();
+          self.getThreads();
         });
       }
     } else {
-      return self.getThreads();
+      self.getThreads();
     }
   }
 
@@ -190,11 +190,12 @@ export class ThreadsPage implements OnInit {
     if (startFrom < 0)
       startFrom = 0;
     if (self.segment === 'all') {
-      return this.dataService.getThreadsRef().orderByPriority().startAt(startFrom).endAt(self.start).once('value', function (snapshot) {
+      this.dataService.getThreadsRef().orderByPriority().startAt(startFrom).endAt(self.start).once('value', function (snapshot) {
         self.itemsService.reversedItems<IThread>(self.mappingsService.getThreads(snapshot)).forEach(function (thread) {
           self.threads.push(thread);
         });
         self.start -= (self.pageSize + 1);
+        self.events.publish('threads:viewed');
         self.loading = false;
       });
     } else {
@@ -204,9 +205,10 @@ export class ThreadsPage implements OnInit {
             self.threads.unshift(self.mappingsService.getThread(dataSnapshot.val(), key));
           });
       });
+      self.events.publish('threads:viewed');
+      self.loading = false;
     }
-    self.events.publish('threads:viewed');
-    self.loading = false;
+
   }
 
   filterThreads(segment) {
@@ -214,7 +216,7 @@ export class ThreadsPage implements OnInit {
       this.selectedSegment = this.segment;
       if (this.selectedSegment === 'favorites')
         this.queryText = '';
-      if (this.connected)
+      if (this.internetConnected)
         // Initialize
         this.loadThreads(true);
     } else {
@@ -263,7 +265,7 @@ export class ThreadsPage implements OnInit {
   }
 
   viewComments(key: string) {
-    if (this.connected) {
+    if (this.internetConnected) {
       this.navCtrl.push(ThreadCommentsPage, {
         threadKey: key
       });
@@ -274,21 +276,18 @@ export class ThreadsPage implements OnInit {
 
   reloadThreads(refresher) {
     this.queryText = '';
-    if (this.connected) {
-      this.loadThreads(true).then(() => {
-        refresher.complete();
-      });
+    if (this.internetConnected) {
+      this.loadThreads(true);
+      refresher.complete();
     } else {
-      // TODO SQLitie
       refresher.complete();
     }
   }
 
   fetchNextThreads(infiniteScroll) {
-    if (this.start > 0 && this.connected) {
-      this.loadThreads(false).then(() => {
-        infiniteScroll.complete();
-      });
+    if (this.start > 0 && this.internetConnected) {
+      this.loadThreads(false);
+      infiniteScroll.complete();
     } else {
       infiniteScroll.complete();
     }

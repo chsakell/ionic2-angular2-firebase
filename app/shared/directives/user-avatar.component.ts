@@ -21,7 +21,7 @@ export class UserAvatarComponent implements OnInit {
         if (defaultUrl == null) {
             self.imageUrl = 'images/avatar.png';
             self.imageLoaded = true;
-            console.log('get from firebae');
+            console.log('get from firebase');
             /*
             self.dataService.getStorageRef().child('images/' + self.user.uid + '/profile.png').getDownloadURL().then(function (url) {
                 self.imageUrl = url.split('?')[0] + '?alt=media' + '&t=' + (new Date().getTime());

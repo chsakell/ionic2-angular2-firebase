@@ -13,10 +13,10 @@
     </ion-segment>
 
     <ion-buttons end>
-      <button *ngIf="!connected" (click)="notify('Working offline..')">
+      <button *ngIf="!internetConnected" (click)="notify('Working offline..')">
         <ion-icon name="warning"></ion-icon>
       </button>
-      <button (click)="createThread()" *ngIf="connected">
+      <button (click)="createThread()" *ngIf="internetConnected">
         <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
@@ -42,7 +42,7 @@
     <forum-thread *ngFor="let thread of threads" [thread]="thread" (onViewComments)="viewComments($event)"></forum-thread>
   </ion-list>
 
-  <ion-infinite-scroll (ionInfinite)="fetchNextThreads($event)" threshold="10px" *ngIf="(start > 0) && (queryText.trim().length == 0) && segment=='all' && connected">
+  <ion-infinite-scroll (ionInfinite)="fetchNextThreads($event)" threshold="10px" *ngIf="(start > 0) && (queryText.trim().length == 0) && segment=='all' && internetConnected">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
 </ion-content>

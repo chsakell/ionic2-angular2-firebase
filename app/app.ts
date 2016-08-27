@@ -77,6 +77,7 @@ export class ForumApp implements OnInit {
     let disconnectSubscription = Network.onDisconnect().subscribe(() => {
       console.log('network was disconnected :-(');
       console.log('Firebase: Go Offline..');
+      self.sqliteService.resetDatabase();
       self.dataService.goOffline();
       self.events.publish('network:connected', false);
     });
