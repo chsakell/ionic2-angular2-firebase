@@ -55,12 +55,12 @@ export class ThreadsPage implements OnInit {
   checkFirebase() {
     let self = this;
     if (!self.dataService.isFirebaseConnected()) {
-      setTimeout(function () {    
+      setTimeout(function () {
         console.log('Retry : ' + self.firebaseConnectionAttempts);
-        self.firebaseConnectionAttempts++;                     
-        if (self.firebaseConnectionAttempts < 5) {            
-          self.checkFirebase();             
-        } else {                 
+        self.firebaseConnectionAttempts++;
+        if (self.firebaseConnectionAttempts < 5) {
+          self.checkFirebase();
+        } else {
           self.internetConnected = false;
           self.dataService.goOffline();
           self.loadSqliteThreads();
@@ -294,7 +294,10 @@ export class ThreadsPage implements OnInit {
   }
 
   scrollToTop() {
-    this.content.scrollToTop();
+    var self = this;
+    setTimeout(function () {
+      self.content.scrollToTop();
+    }, 1500);
   }
 
   notify(message: string) {
