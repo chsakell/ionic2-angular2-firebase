@@ -22,9 +22,11 @@ export class DataService {
         var self = this;
         try {
             self.checkFirebaseConnection();
+            /*
             self.storageRef.child('images/default/profile.png').getDownloadURL().then(function (url) {
                 self.defaultImageUrl = url.split('?')[0] + '?alt=media';
             });
+            */
             self.InitData();
         } catch (error) {
             console.log('Data Service error:' + error);

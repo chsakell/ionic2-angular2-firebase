@@ -17,21 +17,32 @@ export class UserAvatarComponent implements OnInit {
 
     ngOnInit() {
         var self = this;
-        let defaultUrl = self.dataService.getDefaultImageUrl();
-        if (defaultUrl == null) {
+
+        if (self.user.uid === 'default') {
             self.imageUrl = 'images/profile.png';
             self.imageLoaded = true;
-            console.log('get from firebase');
-            /*
+        } else {
             self.dataService.getStorageRef().child('images/' + self.user.uid + '/profile.png').getDownloadURL().then(function (url) {
                 self.imageUrl = url.split('?')[0] + '?alt=media' + '&t=' + (new Date().getTime());
                 self.imageLoaded = true;
             });
-            */
-        } else {
-            this.imageUrl = defaultUrl.replace('default', self.user.uid) + '&t=' + (new Date().getTime());
-            self.imageLoaded = true;
         }
+        /*
+    let defaultUrl = self.dataService.getDefaultImageUrl();
+    if (defaultUrl == null) {
+        self.imageUrl = 'images/profile.png';
+        self.imageLoaded = true;
+        console.log('get from firebase');
+        /*
+        self.dataService.getStorageRef().child('images/' + self.user.uid + '/profile.png').getDownloadURL().then(function (url) {
+            self.imageUrl = url.split('?')[0] + '?alt=media' + '&t=' + (new Date().getTime());
+            self.imageLoaded = true;
+        });
+        
+    } else {
+        this.imageUrl = defaultUrl.replace('default', self.user.uid) + '&t=' + (new Date().getTime());
+        self.imageLoaded = true;
+    }*/
     }
 
     zoom() {
