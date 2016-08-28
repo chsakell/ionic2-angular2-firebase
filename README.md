@@ -2,7 +2,7 @@
 
 Blog post: <a href="http://wp.me/p3mRWu-19N" target="_blank">Building hybrid mobile apps using Ionic 2 and Firebase</a>
 
-<a href="http://wp.me/p3mRWu-11L" rel="attachment wp-att-3961" target="_blank"><img src="https://chsakell.files.wordpress.com/2016/08/ionic2-angular2-firebase-36.png" alt="aspnet5-agnular2-03" class="alignnone size-full wp-image-3961"></a>
+<a href="http://wp.me/p3mRWu-19N" rel="attachment wp-att-3961" target="_blank"><img src="https://chsakell.files.wordpress.com/2016/08/ionic2-angular2-firebase-36.png" alt="aspnet5-agnular2-03" class="alignnone size-full wp-image-3961"></a>
 
 <h3>Frameworks - Tools - Libraries</h3>
 <ul>
@@ -125,6 +125,7 @@ ionic plugin add cordova-plugin-splashscreen
 <h3 style="font-weight:normal;">Forum app preview</h3>
 <img src="https://chsakell.files.wordpress.com/2016/08/ionic2-angular2-firebase-00.gif"/>
 <img src="https://chsakell.files.wordpress.com/2016/08/ionic2-angular2-firebase-23.gif"/>
+<img src="https://chsakell.files.wordpress.com/2016/08/ionic2-angular2-firebase-38.gif"/>
 <h3 style="font-weight:normal;">Follow chsakell's Blog</h3>
 <table id="gradient-style" style="box-shadow:3px -2px 10px #1F394C;font-size:12px;margin:15px;width:290px;text-align:left;border-collapse:collapse;" summary="">
 <thead>
