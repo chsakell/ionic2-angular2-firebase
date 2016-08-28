@@ -66,9 +66,6 @@ service firebase.storage {
 }
     ```
 Make sure to replace the your_id with your's.  
-7. In the Storage, create a folder named images and a subfolder named default.
-8. In the default folder, click UPLOAD FILE and select <a href="https://github.com/chsakell/ionic2-angular2-firebase/blob/master/www/images/profile.png">this</a> file or another one of your choise but make sure you name it <i>profile.png</i>.
-
 
 <h3>Installation instructions - Part 2 (Ionic 2 Forum app)</h3>
 1. Clone or download the source code of this repository.
