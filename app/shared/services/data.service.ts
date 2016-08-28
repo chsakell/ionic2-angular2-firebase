@@ -87,7 +87,7 @@ export class DataService {
                 });
             }
             console.log('commited', snapshot.val());
-        });
+        }, false);
     }
 
     getDatabaseRef() {
