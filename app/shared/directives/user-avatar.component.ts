@@ -16,9 +16,9 @@ export class UserAvatarComponent implements OnInit {
     constructor(private dataService: DataService) { }
 
     ngOnInit() {
-        var self = this;
-
-        if (self.user.uid === 'default') {
+        let self = this;
+        let firebaseConnected: boolean = self.dataService.isFirebaseConnected(); 
+        if (self.user.uid === 'default' || !firebaseConnected) {
             self.imageUrl = 'images/profile.png';
             self.imageLoaded = true;
         } else {
