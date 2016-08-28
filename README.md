@@ -125,6 +125,7 @@ ionic plugin add cordova-plugin-splashscreen
 <h3 style="font-weight:normal;">Forum app preview</h3>
 <img src="https://chsakell.files.wordpress.com/2016/08/ionic2-angular2-firebase-00.gif"/>
 <img src="https://chsakell.files.wordpress.com/2016/08/ionic2-angular2-firebase-23.gif"/>
+<img src="https://chsakell.files.wordpress.com/2016/08/ionic2-angular2-firebase-38.gif"/>
 <h3 style="font-weight:normal;">Follow chsakell's Blog</h3>
 <table id="gradient-style" style="box-shadow:3px -2px 10px #1F394C;font-size:12px;margin:15px;width:290px;text-align:left;border-collapse:collapse;" summary="">
 <thead>
