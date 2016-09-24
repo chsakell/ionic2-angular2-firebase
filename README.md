@@ -73,7 +73,7 @@ Make sure to replace the your_id with your's.
 3. Run the following commands in the exact order.
 
     ```
-npm install -g ionic@beta
+npm install -g ionic
 npm install -g cordova
 npm install
 ionic plugin add com-sarriaroman-photoviewer
