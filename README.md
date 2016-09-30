@@ -87,7 +87,7 @@ ionic plugin add cordova-plugin-splashscreen
 <h3>Running the app</h3>
 <ul>
 	<li>In Firebase ForumApp project console, click the Add Firebase to your web app button.</li>
-	<li>Copy the contents and paste them in the www/index.html file (you will find a <b>Paste your settings here</b> section)</li>
+	<li>Copy the contents and paste them in the src/index.html file (you will find a <b>Paste your settings here</b> section)</li>
 	<li>If you want to run the app in browser simply run the following command.
 		<ul>
 			<li>ionic serve --lab</li>
