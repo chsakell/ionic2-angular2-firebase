@@ -1,0 +1,21 @@
+
+$toolbar-background : #0087be;
+//$list-background-color : white;
+$card-ios-background-color: #f4f4f4;
+$card-md-background-color: #f4f4f4;
+$card-wp-background-color: #f4f4f4;
+scroll-content { background-color: whitesmoke;}
+ion-list .item .item-inner {
+    background: whitesmoke;
+}
+.item {
+    background-color: whitesmoke !important;
+}
+
+ion-card {
+    background: white !important;
+}
+
+.left-border-primary {
+    border-left: 4px solid #0087be;
+}

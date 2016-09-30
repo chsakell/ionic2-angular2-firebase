@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-navbar no-border-bottom>
+    <button ion-button menuToggle>
+      <ion-icon name='menu'></ion-icon>
+    </button>
+    <ion-segment [(ngModel)]="segment" (ionChange)="filterThreads(segment)">
+      <ion-segment-button value="all">
+        All
+      </ion-segment-button>
+      <ion-segment-button value="favorites">
+        Favorites
+      </ion-segment-button>
+    </ion-segment>
+
+    <ion-buttons end>
+      <button ion-button *ngIf="!internetConnected" (click)="notify('Working offline..')">
+        <ion-icon name="warning"></ion-icon>
+      </button>
+      <button ion-button (click)="createThread()" *ngIf="internetConnected">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+  <ion-toolbar no-border-top>
+    <ion-searchbar primary [(ngModel)]="queryText" (ionInput)="searchThreads()" placeholder="Search for a thread..">
+    </ion-searchbar>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-refresher (ionRefresh)="reloadThreads($event)" *ngIf="segment=='all'">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="loading">
+    <img src="assets/images/ring.gif" style="display:block; margin:auto" />
+  </div>
+
+  <ion-list *ngIf="!loading">
+    <forum-thread *ngFor="let thread of threads" [thread]="thread" (onViewComments)="viewComments($event)"></forum-thread>
+  </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="fetchNextThreads($event)" threshold="10px" *ngIf="(start > 0) && (queryText.trim().length == 0) && segment=='all' && internetConnected">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

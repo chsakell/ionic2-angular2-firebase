@@ -1,0 +1,20 @@
+.platform-ios .fixed-div {
+  right: 0;
+    bottom: 0;
+    margin-bottom: 42px;
+}
+
+.platform-android .fixed-div {
+  right: 0;
+    bottom: 0;
+    margin-bottom: 56px;
+}
+
+.platform-windows .fixed-div {
+  right: 0;
+    bottom: 0;
+}
+
+ion-card .item + ion-card-content {
+    padding-top: 7px;
+}
