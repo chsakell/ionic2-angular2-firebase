@@ -89,7 +89,6 @@ export class SignupPage implements OnInit {
                         });
                 }).catch(function (error) {
                     // Handle Errors here.
-                    var errorCode = error.code;
                     var errorMessage = error.message;
                     console.error(error);
                     loader.dismiss().then(() => {
@@ -112,8 +111,8 @@ export class SignupPage implements OnInit {
         xhr.open('GET', imageData, true);
         xhr.responseType = 'blob';
         xhr.onload = function (e) {
-            if (this.status === 200) {
-                var myBlob = this.response;
+            if (xhr.status === 200) {
+                var myBlob = xhr.response;
                 // myBlob is now the blob that the object URL pointed to.
                 self.startUploading(myBlob);
             }
