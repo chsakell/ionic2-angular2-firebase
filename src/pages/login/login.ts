@@ -56,7 +56,6 @@ export class LoginPage implements OnInit {
                     self.nav.setRoot(TabsPage);
                 }).catch(function (error) {
                     // Handle Errors here.
-                    var errorCode = error.code;
                     var errorMessage = error.message;
                     loader.dismiss().then(() => {
                         let toast = self.toastCtrl.create({
